@@ -1,0 +1,334 @@
+﻿<Controls:MetroWindow x:Class="pf_analyzer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
+        Title="Studi Kelayakan Properti" Height="600" Width="800" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
+    <Controls:MetroWindow.WindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="about" />
+            <Button Content="settings" />
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.WindowCommands>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Controls:TransitioningContentControl x:Name="transitioning" Grid.Row="2" Grid.Column="0" Width="792" Height="569" Transition="Down" Grid.RowSpan="2">
+        <Controls:MetroAnimatedTabControl x:Name="matcPrimaryTabControl" BorderThickness="0">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="">
+                <StackPanel>
+                    <Label Margin="10" Content="Lokasi dan Luas Properti" FontSize="24" />
+                    <Grid Margin="10" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="290" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Margin="5" Height="26" Content="Lokasi atau Alamat" />
+                        <Label Grid.Row="1" Grid.Column="0" Margin="5" Height="26" Content="Luas Tanah" />
+                        <Label Grid.Row="2" Grid.Column="0" Margin="5" Height="26" Content="Luas Jalan Lingkungan" />
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5" Height="26" Content="Harga Tanah" />
+                        <Label Grid.Row="4" Grid.Column="0" Margin="5,0,5,254" Height="26" Content="Kavling" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Name="txtLocation" Height="20" Text="{Binding Location}" />
+                        <StackPanel Grid.Row="1" Grid.Column="1" Height="40" Orientation="Horizontal">
+                            <TextBox Name="txtLandArea" Width="50" Height="20" Text="{Binding TotalLandArea}"
+                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <Label Content="m²" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Height="40" Orientation="Horizontal">
+                            <TextBox Name="txtRoadArea" Width="50" Height="20" Text="{Binding TotalRoadArea}"
+                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <Label Content="m²" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="1" Height="40" Orientation="Horizontal">
+                            <TextBox Name="txtBaseLandPrice" Width="150" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
+                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <Label Content="/m²" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="4" Grid.Column="1" >
+                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="220"
+                                      CellEditEnding="HandleSetRemainingLandAreaLabel" >
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Nama Kavling" Width="350">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding Name}" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Luas Tanah" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding LandArea}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate>
+                                                <TextBox Text="{Binding BuildingArea}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnDeleteLot" Style="{DynamicResource SquareButtonStyle}" Margin="0,0,5,0"
+                                        Content="   Hapus Kavling   " Click="DeleteLot"></Button>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Name="lblRemainingArea" Content="Luas Tanah Tersisa: " />
+                                <Label Name="lblRemainingAreaNominal" Content="0" />
+                                <Label Name="lblRemainingAreaUnit" Content="m²" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                    <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="0,0,10,0">
+                        <Button  Name="btnStep1Next" Content="berikutnya >>" Style="{DynamicResource SquareButtonStyle}"
+                                 Margin="5,0,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right" Click="FirstPageNext"/>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="">
+                <StackPanel>
+                    <Label Margin="10" Content="Biaya-biaya" FontSize="24" />
+                    <Label Margin="10" Content="Silakan masukkan biaya-biaya yang dikenakan terhadap properti." />
+                    <DataGrid x:Name="dgCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="285" Margin="10,0,10,0">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Nama Pekerjaan" Width="300">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Volume" Width="120">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Quantity, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Quantity}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Unit" Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Unit, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Unit}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Harga Satuan" Width="145">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=UnitValue, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding UnitValue, StringFormat={}{0:f}}" TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Harga Total" Width="145">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=TotalValue, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding TotalValue, StringFormat={}{0:f}}" TextAlignment="Right" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Grid Margin="10" VerticalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="Jumlah Biaya Pekerjaan" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="Harga Tanah Efektif" />
+                        <Label Grid.Row="2" Grid.Column="0" Content="% Keuntungan dari Tanah" />
+
+                        <Label Grid.Row="0" Grid.Column="2" Content="Harga Tanah Digunakan" />
+                        <Label Grid.Row="1" Grid.Column="2" Content="Harga Bangunan" />
+                        <Label Grid.Row="2" Grid.Column="2" Content="IMB/Kavling" />
+
+                        <Label Grid.Row="0" Grid.Column="4" Content="Promo/Kavling" />
+                        <Label Grid.Row="1" Grid.Column="4" Content="PPH (%)" />
+                        <Label Grid.Row="2" Grid.Column="4" Content="Fee (%)" />
+
+                        <TextBox Name="txtTotalCosts" Grid.Row="0" Grid.Column="1" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding TotalCosts, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                        <TextBox Name="txtEffectiveLandCost" Grid.Row="1" Grid.Column="1" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding EffectiveLandCost, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                        <TextBox Name="txtLandResaleProfitPercent" Grid.Row="2" Grid.Column="1" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding LandResaleProfitPercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+
+                        <TextBox Name="txtLandResalePrice" Grid.Row="0" Grid.Column="3" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding LandResalePrice, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                        <TextBox Name="txtBuildingPrice" Grid.Row="1" Grid.Column="3" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding BuildingPrice, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                        <TextBox Name="txtBuildingPermitCostPerLot" Grid.Row="2" Grid.Column="3" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding BuildingPermitCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
+
+                        <TextBox Name="txtPromoCostPerLot" Grid.Row="0" Grid.Column="5" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding PromoCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
+                        <TextBox Name="txtValueAddedTaxPercent" Grid.Row="1" Grid.Column="5" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding ValueAddedTaxPercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                        <TextBox Name="txtFeePercent" Grid.Row="2" Grid.Column="5" Height="20" Margin="7,0,7,0"
+                                 Text="{Binding FeePercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                    </Grid>
+                    <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="10,0,10,0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <Button Name="btnSetDefaultJobs" Content="Tambahkan Biaya Umum" Style="{DynamicResource SquareButtonStyle}"
+                                    Margin="0,0,5,0" Padding="0" Height="25" Width="150" Click="AddDefaultCosts" />
+                            <Button Name="btnDeleteJob" Content="Hapus Biaya" Style="{DynamicResource SquareButtonStyle}"
+                                    Margin="5,0,5,0" Padding="0" Height="25" Width="150" Click="DeleteCost" />
+                            <Button Name="btnDeleteAllJobs" Content="Hapus Semua BIaya" Style="{DynamicResource SquareButtonStyle}"
+                                    Margin="5,0,5,0" Padding="0" Height="25" Width="150" Click="DeleteAllCosts" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Name="btnStep2Prev" Content="&lt;&lt; sebelumya" Style="{DynamicResource SquareButtonStyle}"
+                                    Margin="5,0,5,0" Padding="0" Height="25" Width="100" Click="SecondPagePrevious"/>
+                            <Button Name="btnStep2Next" Content="berikutnya &gt;&gt;" Style="{DynamicResource SquareButtonStyle}"
+                                    Margin="5,0,0,0" Padding="0" Height="25" Width="100" Click="SecondPageNext"/>
+                        </StackPanel>
+                    </DockPanel>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="">
+                <ScrollViewer>
+                    <StackPanel>
+                        <Label Margin="10" Content="Hasil Perhitungan" FontSize="24" />
+                        <Label Margin="10" Content="Data Properti" FontSize="14" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Lokasi atau Alamat" />
+                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Luas Tanah" />
+                            <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Luas Jalan Lingkungan" />
+                            <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah" />
+
+                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation" Content="{Binding Location}" />
+                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea" Content="{Binding TotalLandArea}" />
+                            <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea" Content="{Binding TotalRoadArea}" />
+                            <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="{Binding BaseLandPrice}" />
+                        </Grid>
+                        <Label Margin="10" Content="Data Kavling" FontSize="14" />
+                        <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="220"
+                                  Margin="10,0,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Nama Kavling" Width="350">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5"
+                                                           GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Luas Tanah" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </Controls:MetroAnimatedTabControl>
+    </Controls:TransitioningContentControl>
+
+</Controls:MetroWindow>
