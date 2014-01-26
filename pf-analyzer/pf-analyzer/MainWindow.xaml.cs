@@ -201,7 +201,7 @@ namespace pf_analyzer
                 Cost cost1 = new Cost();
                 cost1.Name = COST_LAND_PURCHASE;
                 cost1.Quantity = data.TotalLandArea;
-                cost1.Unit = "m2";
+                cost1.Unit = "m²";
                 cost1.UnitValue = data.BaseLandPrice;
                 cost1.PropertyChanged += Cost_PropertyChanged;
                 data.Costs.Add(cost1);
@@ -212,7 +212,7 @@ namespace pf_analyzer
                 Cost cost2 = new Cost();
                 cost2.Name = COST_ROAD_PURCHASE;
                 cost2.Quantity = data.TotalRoadArea;
-                cost2.Unit = "m2";
+                cost2.Unit = "m²";
                 cost2.UnitValue = data.BaseLandPrice;
                 cost2.PropertyChanged += Cost_PropertyChanged;
                 data.Costs.Add(cost2);
@@ -220,7 +220,7 @@ namespace pf_analyzer
 
             Cost cost3 = new Cost();
             cost3.Name = "Drainase";
-            cost3.Quantity = 0;
+            cost3.Quantity = 80;
             cost3.Unit = "m";
             cost3.UnitValue = 50000;
             cost3.PropertyChanged += Cost_PropertyChanged;
@@ -228,7 +228,7 @@ namespace pf_analyzer
 
             Cost cost4 = new Cost();
             cost4.Name = "Resapan";
-            cost4.Quantity = 0;
+            cost4.Quantity = 2;
             cost4.Unit = "bh";
             cost4.UnitValue = 1000000;
             cost4.PropertyChanged += Cost_PropertyChanged;
@@ -236,7 +236,7 @@ namespace pf_analyzer
 
             Cost cost5 = new Cost();
             cost5.Name = "Urug";
-            cost5.Quantity = 0;
+            cost5.Quantity = 1;
             cost5.Unit = "ls";
             cost5.UnitValue = 2000000;
             cost5.PropertyChanged += Cost_PropertyChanged;
@@ -244,7 +244,7 @@ namespace pf_analyzer
 
             Cost cost6 = new Cost();
             cost6.Name = "Pembatas Kavling";
-            cost6.Quantity = 0;
+            cost6.Quantity = 68;
             cost6.Unit = "m";
             cost6.UnitValue = 90000;
             cost6.PropertyChanged += Cost_PropertyChanged;
@@ -315,18 +315,22 @@ namespace pf_analyzer
 
         private void SecondPageNext(object sender, RoutedEventArgs e)
         {
-            // TODO: Set validation for Page 2!
-            // matcPrimaryTabControl.SelectedIndex = 2;
             try
             {
                 ValidateAllData();
                 RecalculateAllData();
+                SetupResultFields();
                 matcPrimaryTabControl.SelectedIndex = 2;
             }
             catch (DataValidationException dve)
             {
                 MessageBox.Show("Data validation exception occured: " + dve.Message, "Error During Calculation");
             }
+        }
+
+        private void ThirdPagePrevious(object sender, RoutedEventArgs e)
+        {
+            matcPrimaryTabControl.SelectedIndex = 1;
         }
 
         #endregion
@@ -570,6 +574,10 @@ namespace pf_analyzer
             foreach (Lot lot in data.Lots)
             {
 
+                /// set common costs
+                lot.BuildingPermitCost = data.BuildingPermitCostPerLot;
+                lot.PromoCost = data.PromoCostPerLot;
+
                 //// calculate total building price = building price * building area
                 lot.TotalBuildingCost = data.BuildingPrice * lot.BuildingArea;
 
@@ -630,6 +638,55 @@ namespace pf_analyzer
         {
             data.Costs = new ObservableCollection<Cost>();
             data.Costs.CollectionChanged += Costs_CollectionChanged;
+        }
+
+        private void SetupResultFields()
+        {
+            int lotBasedDataGridHeight = 28 * (data.Lots.Count() + 1);
+            int costBasedDataGridHeight = 28 * (data.Costs.Count() + 1);
+
+            lblResultLocation.Content = data.Location;
+            lblResultLandArea.Content = data.TotalLandArea;
+            lblResultRoadArea.Content = data.TotalRoadArea;
+            lblResultBaseLandPrice.Content = data.BaseLandPrice;
+
+            dgResultBasicLots.Height = lotBasedDataGridHeight;
+            dgResultCosts.Height = costBasedDataGridHeight;
+            
+            lblResultTotalCostsOfDevelopment.Content = data.TotalCostsOfDevelopment;
+            lblResultEffectiveLandCost.Content = data.EffectiveLandCost;
+            lblResultLandResaleProfitPercent.Content = data.LandResaleProfitPercent;
+            lblResultLandResalePrice.Content = data.LandResalePrice;
+            lblResultBuildingPrice.Content = data.BuildingPrice;
+
+            dgResultLotNettPrice.Height = lotBasedDataGridHeight;
+
+            dgResultLotBaseSalePrice.Columns[1].Header = "PPH " + data.ValueAddedTaxPercent + "%";
+            dgResultLotBaseSalePrice.Columns[2].Header = "Fee " + data.FeePercent + "%";
+            dgResultLotBaseSalePrice.Height = lotBasedDataGridHeight;
+
+            dgResultLotSalePrice.Columns[3].Header = "HJ Profit " + data.ProfitPoints[0] + "%";
+            dgResultLotSalePrice.Columns[4].Header = "HJ Profit " + data.ProfitPoints[1] + "%";
+            dgResultLotSalePrice.Columns[5].Header = "HJ Profit " + data.ProfitPoints[2] + "%";
+            dgResultLotSalePrice.Columns[6].Header = "HJ Profit " + data.ProfitPoints[3] + "%";
+            dgResultLotSalePrice.Height = lotBasedDataGridHeight;
+
+            dgResultLotProfit.Columns[3].Header = "Profit " + data.ProfitPoints[0] + "%";
+            dgResultLotProfit.Columns[4].Header = "Profit " + data.ProfitPoints[1] + "%";
+            dgResultLotProfit.Columns[5].Header = "Profit " + data.ProfitPoints[2] + "%";
+            dgResultLotProfit.Columns[6].Header = "Profit " + data.ProfitPoints[3] + "%";
+            dgResultLotProfit.Height = lotBasedDataGridHeight;
+
+            lblResultLandPriceActual10.Content = "Profit 10%";
+            lblResultLandPriceActualP1.Content = "Profit " + data.ProfitPoints[0] + "%";
+            lblResultLandPriceActualP2.Content = "Profit " + data.ProfitPoints[1] + "%";
+            lblResultLandPriceActualP3.Content = "Profit " + data.ProfitPoints[2] + "%";
+            lblResultLandPriceActualP4.Content = "Profit " + data.ProfitPoints[3] + "%";
+            lblResultLandPriceNominal10.Content = data.ActualLandValue;
+            lblResultLandPriceNominalP1.Content = (((data.ProfitPoints[0] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
+            lblResultLandPriceNominalP2.Content = (((data.ProfitPoints[1] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
+            lblResultLandPriceNominalP3.Content = (((data.ProfitPoints[2] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
+            lblResultLandPriceNominalP4.Content = (((data.ProfitPoints[3] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
         }
 
     }

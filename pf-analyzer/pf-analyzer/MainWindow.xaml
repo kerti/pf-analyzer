@@ -131,7 +131,7 @@
                         </StackPanel>
                     </Grid>
                     <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="0,0,10,0">
-                        <Button  Name="btnStep1Next" Content="berikutnya >>" Style="{DynamicResource SquareButtonStyle}"
+                        <Button  Name="btnStep1Next" Content="berikutnya &gt;&gt;" Style="{DynamicResource SquareButtonStyle}"
                                  Margin="5,0,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right" Click="FirstPageNext"/>
                     </DockPanel>
                 </StackPanel>
@@ -270,63 +270,362 @@
                 </StackPanel>
             </TabItem>
             <TabItem Header="">
-                <ScrollViewer>
-                    <StackPanel>
-                        <Label Margin="10" Content="Hasil Perhitungan" FontSize="24" />
-                        <Label Margin="10" Content="Data Properti" FontSize="14" />
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <Label Margin="10" Content="Hasil Perhitungan" FontSize="24" />
+                    <ScrollViewer Height="460">
+                        <StackPanel>
+                            <Label Margin="10" Content="Data Properti" FontSize="16" FontWeight="Bold" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
 
-                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Lokasi atau Alamat" />
-                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Luas Tanah" />
-                            <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Luas Jalan Lingkungan" />
-                            <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah" />
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Lokasi atau Alamat" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Luas Tanah" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Luas Jalan Lingkungan" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah" />
 
-                            <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation" Content="{Binding Location}" />
-                            <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea" Content="{Binding TotalLandArea}" />
-                            <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea" Content="{Binding TotalRoadArea}" />
-                            <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="{Binding BaseLandPrice}" />
-                        </Grid>
-                        <Label Margin="10" Content="Data Kavling" FontSize="14" />
-                        <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="220"
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation" Content="" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea" Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea" Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="" ContentStringFormat="Rp {0:N2}" />
+                            </Grid>
+                            <Label Margin="10" Content="Data Kavling" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="140"
                                   Margin="10,0,0,0">
-                            <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Nama Kavling" Width="350">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5"
-                                                           GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Luas Tanah" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged}"
-                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
-                </ScrollViewer>
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Nama Kavling" Width="350">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Luas Tanah" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=LandArea}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BuildingArea}" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Pekerjaan dan Biaya" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="280"
+                                  Margin="10,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Nama Pekerjaan/Biaya" Width="388">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Volume" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Quantity}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Unit" Width="50">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Unit}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Satuan" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=UnitValue, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Jumlah" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=TotalValue, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Total Biaya dan Harga Pokok Penjualan" FontSize="16" FontWeight="Bold" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Jumlah Pekerjaan dan Biaya" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Harga Tanah Efektif" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Profit Margin Penjualan Tanah" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah Digunakan" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" Content="Harga Bangunan Digunakan" />
+
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultTotalCostsOfDevelopment"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultEffectiveLandCost"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultLandResaleProfitPercent"
+                                   Content="" ContentStringFormat="{}{0:N2} %" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultLandResalePrice"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultBuildingPrice"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                            </Grid>
+                            <Label Margin="10" Content="Harga Netto per Kavling" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultLotNettPrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
+                                  Margin="10,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Kavling" Width="238">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Bangunan" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=TotalBuildingCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Tanah" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=TotalLandCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="IMB" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BuildingPermitCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Promo" Width="80">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PromoCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Jumlah Netto" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=TotalNettPrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Harga Pokok Penjualan per Kavling" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultLotBaseSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
+                                  Margin="10,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Kavling" Width="398">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="PPH" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=ValueAddedTax, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Fee" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Fee, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="HPP" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BaseSalePrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Harga Jual per Kavling" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultLotSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
+                                  Margin="10,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Kavling" Width="158">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="LT" Width="60">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="LB" Width="60">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P1" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[0].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P2" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[1].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P3" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[2].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P4" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[3].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Keuntungan per Kavling" FontSize="16" FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultLotProfit" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
+                                  Margin="10,0,0,0">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Kavling" Width="158">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=Name}" Margin="5"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="LT" Width="60">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="LB" Width="60">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P1" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[0].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P2" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[1].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P3" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[2].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="P4" Width="120">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Path=PricePoints[3].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Margin="10" Content="Pengembalian (Perhitungan Harga Tanah Aktual)" FontSize="16" FontWeight="Bold" />
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" x:Name="lblResultLandPriceActual10" Content="Profit 10%" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" x:Name="lblResultLandPriceActualP1" Content="P1" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" x:Name="lblResultLandPriceActualP2" Content="P2" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" x:Name="lblResultLandPriceActualP3" Content="P3" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" x:Name="lblResultLandPriceActualP4" Content="P4" />
+
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLandPriceNominal10"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandPriceNominalP1"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultLandPriceNominalP2"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultLandPriceNominalP3"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultLandPriceNominalP4"
+                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <DockPanel Grid.Row="4" Grid.Column="1" Height="35" Margin="0,0,10,0">
+                        <Button  Name="btnStep3Prev" Content="&lt;&lt; sebelumnya" Style="{DynamicResource SquareButtonStyle}"
+                                 Margin="5,10,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right" Click="ThirdPagePrevious"/>
+                    </DockPanel>
+                </StackPanel>
             </TabItem>
         </Controls:MetroAnimatedTabControl>
     </Controls:TransitioningContentControl>

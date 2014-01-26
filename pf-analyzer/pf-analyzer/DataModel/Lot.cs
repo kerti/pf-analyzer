@@ -39,6 +39,16 @@ namespace pf_analyzer.DataModel
         public decimal TotalLandCost { get; set; }
 
         /// <summary>
+        /// The cost of obtaining a building permit for this lot.
+        /// </summary>
+        public decimal BuildingPermitCost { get; set; }
+
+        /// <summary>
+        /// The cost of promoting and advertising this lot.
+        /// </summary>
+        public decimal PromoCost { get; set; }
+
+        /// <summary>
         /// The total nett price of this lot, which is calculated as
         /// total building cost + total land cost + building permit cost + promo cost
         /// </summary>
