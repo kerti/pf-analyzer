@@ -11,19 +11,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace pf_analyzer
 {
     /// <summary>
-    /// Interaction logic for LotEditor.xaml
+    /// Interaction logic for About.xaml
     /// </summary>
-    public partial class LotEditor : MetroWindow
+    public partial class About : MetroWindow
     {
-        public LotEditor()
+        public About()
         {
             InitializeComponent();
-            this.Owner = App.Current.MainWindow;
         }
     }
 }

@@ -53,7 +53,7 @@ namespace pf_analyzer
 
 
             InitializeDataModel();
-            InitializeDummyData();
+            //InitializeDummyData();
             this.DataContext = data;
             RecalculateRemainingLandArea();
         }
@@ -124,6 +124,13 @@ namespace pf_analyzer
             (e.OriginalSource as TextBox).SelectAll();
         }
 
+        private void ShowAboutPage(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.Owner = this;
+            about.ShowDialog();
+        }
+
         #endregion
 
         #region Page One
@@ -176,6 +183,106 @@ namespace pf_analyzer
         #region Page Two
 
         private void AddDefaultCosts(object sender, RoutedEventArgs e)
+        {
+
+            if (null == data.Costs)
+            {
+                InitializeCosts();
+            }
+
+            if (data.Costs.Count > 0)
+            {
+                // TODO: Use metro-styled MessageBox for theme consistency
+                MessageBoxResult answer = MessageBox.Show(
+                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?", "Konfirmasi Biaya Umum", MessageBoxButton.YesNo);
+                if (MessageBoxResult.Yes == answer)
+                {
+                    data.Costs.Clear();
+                }
+            }
+
+            List<string> names = (from c in data.Costs select c.Name).ToList();
+
+            if (!names.Contains(COST_LAND_PURCHASE))
+            {
+                Cost cost1 = new Cost();
+                cost1.Name = COST_LAND_PURCHASE;
+                cost1.Quantity = data.TotalLandArea;
+                cost1.Unit = "m²";
+                cost1.UnitValue = data.BaseLandPrice;
+                cost1.PropertyChanged += Cost_PropertyChanged;
+                data.Costs.Add(cost1);
+            }
+
+            if (!names.Contains(COST_ROAD_PURCHASE))
+            {
+                Cost cost2 = new Cost();
+                cost2.Name = COST_ROAD_PURCHASE;
+                cost2.Quantity = data.TotalRoadArea;
+                cost2.Unit = "m²";
+                cost2.UnitValue = data.BaseLandPrice;
+                cost2.PropertyChanged += Cost_PropertyChanged;
+                data.Costs.Add(cost2);
+            }
+
+            Cost cost3 = new Cost();
+            cost3.Name = "Drainase";
+            cost3.Quantity = 0;
+            cost3.Unit = "m";
+            cost3.UnitValue = 0;
+            cost3.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost3);
+
+            Cost cost4 = new Cost();
+            cost4.Name = "Resapan";
+            cost4.Quantity = 0;
+            cost4.Unit = "bh";
+            cost4.UnitValue = 0;
+            cost4.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost4);
+
+            Cost cost5 = new Cost();
+            cost5.Name = "Urug";
+            cost5.Quantity = 0;
+            cost5.Unit = "ls";
+            cost5.UnitValue = 0;
+            cost5.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost5);
+
+            Cost cost6 = new Cost();
+            cost6.Name = "Pembatas Kavling";
+            cost6.Quantity = 0;
+            cost6.Unit = "m";
+            cost6.UnitValue = 0;
+            cost6.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost6);
+
+            Cost cost7 = new Cost();
+            cost7.Name = "Kontribusi Wilayah";
+            cost7.Quantity = 0;
+            cost7.Unit = "unit";
+            cost7.UnitValue = 0;
+            cost7.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost7);
+
+            Cost cost8 = new Cost();
+            cost8.Name = "Biaya Pecah";
+            cost8.Quantity = 0;
+            cost8.Unit = "bh";
+            cost8.UnitValue = 0;
+            cost8.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost8);
+
+            Cost cost9 = new Cost();
+            cost9.Name = "AJB";
+            cost9.Quantity = 0;
+            cost9.Unit = "bh";
+            cost9.UnitValue = 0;
+            cost9.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost9);
+        }
+
+        private void AddDefaultCostsWithValues(object sender, RoutedEventArgs e)
         {
 
             if (null == data.Costs)
@@ -324,7 +431,7 @@ namespace pf_analyzer
             }
             catch (DataValidationException dve)
             {
-                MessageBox.Show("Data validation exception occured: " + dve.Message, "Error During Calculation");
+                ShowMessageAsync("Mohon Periksa Kembali Data", dve.Message, MessageDialogStyle.Affirmative);
             }
         }
 
@@ -370,41 +477,41 @@ namespace pf_analyzer
 
             if (string.IsNullOrEmpty(data.Location))
             {
-                MessageBox.Show("Silakan tentukan nama atau alamat lokasi properti.", "Data Properti Tidak Lengkap");
+                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan nama atau alamat lokasi properti.", MessageDialogStyle.Affirmative);
                 txtLocation.Focus();
                 return false;
             }
 
             if (0 == data.TotalLandArea)
             {
-                MessageBox.Show("Silakan tentukan luas keseluruhan properti.", "Data Properti Tidak Lengkap");
+                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan luas keseluruhan properti.", MessageDialogStyle.Affirmative);
                 txtLandArea.Focus();
                 return false;
             }
 
             if (0 == data.TotalRoadArea)
             {
-                MessageBox.Show("Silakan tentukan luas jalan lingkungan yang akan dibuat.", "Data Properti Tidak Lengkap");
+                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan luas jalan lingkungan yang akan dibuat.", MessageDialogStyle.Affirmative);
                 txtRoadArea.Focus();
                 return false;
             }
 
             if (0 == data.BaseLandPrice)
             {
-                MessageBox.Show("Silakan tentukan harga dasar tanah per meter.", "Data Properti Tidak Lengkap");
+                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan harga dasar tanah per meter.", MessageDialogStyle.Affirmative);
                 txtBaseLandPrice.Focus();
                 return false;
             }
 
             if (data.Lots.Count == 0)
             {
-                MessageBox.Show("Silakan tambahkan minimal satu kavling.", "Data Kavling Masih Kosong");
+                ShowMessageAsync("Data Kavling Masih Kosong", "Silakan tambahkan minimal satu kavling.", MessageDialogStyle.Affirmative);
                 return false;
             }
 
             else if (RecalculateRemainingLandArea() > 0)
             {
-                MessageBox.Show("Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.", "Lahan Tersisa");
+                ShowMessageAsync("Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.", MessageDialogStyle.Affirmative);
                 return false;
             }
 
@@ -416,12 +523,12 @@ namespace pf_analyzer
             // verify property variables are complete
             if (string.IsNullOrEmpty(data.Location))
             {
-                throw new DataValidationException("Property location not set.");
+                throw new DataValidationException("Lokasi properti belum ditentukan.");
             }
 
             if (0 == data.TotalLandArea)
             {
-                throw new DataValidationException("Total land area not set.");
+                throw new DataValidationException("Luas total properti belum ditentukan.");
             }
 
             if (0 == data.TotalRoadArea)
@@ -431,12 +538,12 @@ namespace pf_analyzer
 
             if (0 == data.BaseLandPrice)
             {
-                throw new DataValidationException("Base land price not set.");
+                throw new DataValidationException("Harga dasar tanah belum ditentukan.");
             }
 
             if (0 == data.BuildingPrice)
             {
-                throw new DataValidationException("Building price not set.");
+                throw new DataValidationException("Harga bangunan belum ditentukan.");
             }
 
             // verify base prices and costs are complete
@@ -447,7 +554,7 @@ namespace pf_analyzer
 
             if (0 == data.BuildingPermitCostPerLot)
             {
-                throw new DataValidationException("Building permit cost per lot not set.");
+                throw new DataValidationException("Biaya IMB per kavling belum ditentukan.");
             }
 
             if (0 == data.PromoCostPerLot)
@@ -457,24 +564,24 @@ namespace pf_analyzer
 
             if (0 == data.FeePercent)
             {
-                throw new DataValidationException("Fee percent not set.");
+                throw new DataValidationException("Persen fee belum ditentukan.");
             }
 
             // verify at least one lot is created
             if (null == data.Lots)
             {
                 data.Lots = new ObservableCollection<Lot>();
-                throw new DataValidationException("No lots are set.");
+                throw new DataValidationException("Belum ada kavling yang ditentukan.");
             }
             else if (0 == data.Lots.Count)
             {
-                throw new DataValidationException("No lots are set.");
+                throw new DataValidationException("Belum ada kavling yang ditentukan.");
             }
 
             // verify all land area has been allocated
             if (RecalculateRemainingLandArea() > 0)
             {
-                throw new DataValidationException("Not all available land area is allocated.");
+                throw new DataValidationException("Belum semua luasan tanah telah terpakai baik untuk jalan lingkungan atau untuk kavling.");
             }
 
             // verify all lots have complete initial variables
@@ -482,11 +589,11 @@ namespace pf_analyzer
             {
                 if (string.IsNullOrEmpty(lot.Name))
                 {
-                    throw new DataValidationException("One of the lots' name is not set.");
+                    throw new DataValidationException("Salah satu nama kavling masih kosong.");
                 }
                 if (0 == lot.LandArea)
                 {
-                    throw new DataValidationException("Land area for lot " + lot.Name + " is not set.");
+                    throw new DataValidationException("Luas tanah untuk kavling \"" + lot.Name + "\" belum ditentukan.");
                 }
                 if (0 == lot.BuildingArea)
                 {
@@ -502,7 +609,7 @@ namespace pf_analyzer
 
             if (0 == data.Costs.Count)
             {
-                throw new DataValidationException("No costs have been created for this property.");
+                throw new DataValidationException("Biaya-biaya belum ditentukan.");
             }
 
             // verify land purchase cost and road purchase cost are created
@@ -510,12 +617,12 @@ namespace pf_analyzer
 
             if (!costNames.Contains(COST_LAND_PURCHASE))
             {
-                throw new DataValidationException("No land purchase cost have been created for this property.");
+                throw new DataValidationException("Biaya pembelian tanah belum ditentukan.");
             }
 
             if (!costNames.Contains(COST_ROAD_PURCHASE))
             {
-                throw new DataValidationException("No road purchase cost have been created for this property.");
+                throw new DataValidationException("Biaya pembelian tanah untuk jalan lingkungan belum ditentukan.");
             }
 
             // verify all costs have proper unit value, quantity, and total value set
@@ -523,15 +630,15 @@ namespace pf_analyzer
             {
                 if (0 == cost.UnitValue)
                 {
-                    throw new DataValidationException("Unit value not set for cost " + cost.Name);
+                    throw new DataValidationException("Harga satuan belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
                 }
                 if (0 == cost.Quantity)
                 {
-                    throw new DataValidationException("Quantity not set for cost " + cost.Name);
+                    throw new DataValidationException("Volume belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
                 }
                 if (0 == cost.TotalValue)
                 {
-                    throw new DataValidationException("Total value not set for cost " + cost.Name);
+                    throw new DataValidationException("Biaya total belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
                 }
             }
         }

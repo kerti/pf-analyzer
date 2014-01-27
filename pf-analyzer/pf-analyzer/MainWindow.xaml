@@ -4,11 +4,10 @@
         xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
         Title="Studi Kelayakan Properti" Height="600" Width="800" ResizeMode="CanMinimize"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen" BorderBrush="Gray" BorderThickness="1">
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
-            <Button Content="about" />
-            <Button Content="settings" />
+            <Button x:Name="btnAbout" Content="tentang program ini" Click="ShowAboutPage" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.WindowCommands>
     <Window.Resources>

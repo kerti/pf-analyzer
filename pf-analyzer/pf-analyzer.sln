@@ -3,16 +3,38 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pf-analyzer", "pf-analyzer\pf-analyzer.csproj", "{E976E9F0-6443-43C3-A06D-890F0E765D94}"
 EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "pf-analyzer.Setup", "pf-analyzer.Setup\pf-analyzer.Setup.wixproj", "{D36A66E1-58B5-47DE-8D41-49C47AB365AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E976E9F0-6443-43C3-A06D-890F0E765D94}.Release|x86.ActiveCfg = Release|Any CPU
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Debug|x86.ActiveCfg = Debug|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Debug|x86.Build.0 = Debug|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Release|Any CPU.ActiveCfg = Release|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Release|x86.ActiveCfg = Release|x86
+		{D36A66E1-58B5-47DE-8D41-49C47AB365AC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
