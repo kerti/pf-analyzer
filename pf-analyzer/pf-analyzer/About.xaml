@@ -37,7 +37,7 @@
             <TextBlock TextAlignment="Center" FontSize="12" FontWeight="Normal" TextWrapping="Wrap" Margin="10,10,10,0"
                        Text="Perangkat lunak ini diberikan apa adanya."/>
             <TextBlock TextAlignment="Center" FontSize="12" FontWeight="Normal" TextWrapping="Wrap" Margin="10,0,10,10"
-                       Text="Tidak ada garansi, jaminan, ataupun lisensi dalam bentuk apapun."/>
+                       Text="Perangkat lunak ini dirilis dengan lisensi GNU GPL v2."/>
             <TextBlock TextAlignment="Center" FontSize="12" FontWeight="Normal" TextWrapping="Wrap" Margin="10"
                        Text="2013 | Raditya Kertiyasa"/>
         </StackPanel>
