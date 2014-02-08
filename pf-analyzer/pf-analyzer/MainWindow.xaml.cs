@@ -1,4 +1,6 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using pf_analyzer.Common;
 using pf_analyzer.DataModel;
 using pf_analyzer.Exceptions;
 using System;
@@ -150,23 +152,28 @@ namespace pf_analyzer
             lblRemainingAreaNominal.Content = RecalculateRemainingLandArea().ToString();
         }
 
-        private void DeleteLot(object sender, RoutedEventArgs e)
+        private async void DeleteLot(object sender, RoutedEventArgs e)
         {
             Lot lot = dgBasicLots.SelectedItem as Lot;
             if (null != lot)
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
-                MessageBoxResult answer = MessageBox.Show(
-                    "Apakah Anda yakin ingin menghapus " + lot.Name + "?", "Konfirmasi Menghapus Kavling", MessageBoxButton.OKCancel);
-                if (MessageBoxResult.OK == answer)
+                MessageDialogResult answer = await this.ShowMessageAsync(
+                    "Konfirmasi Menghapus Kavling",
+                    "Apakah Anda yakin ingin menghapus " + lot.Name + "?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    Constants.MDS_YESNO);
+                if (MessageDialogResult.Affirmative == answer)
                 {
                     data.Lots.Remove(lot);
                 }
             }
             else
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
-                MessageBox.Show("Silakan pilih dahulu kavling yang akan dihapus.", "Pilih Kavling");
+                await this.ShowMessageAsync(
+                    "Pilih Kavling",
+                    "Silakan pilih dahulu kavling yang akan dihapus.",
+                    MessageDialogStyle.Affirmative,
+                    Constants.MDS_OKAY);
             }
         }
 
@@ -182,7 +189,7 @@ namespace pf_analyzer
 
         #region Page Two
 
-        private void AddDefaultCosts(object sender, RoutedEventArgs e)
+        private async void AddDefaultCosts(object sender, RoutedEventArgs e)
         {
 
             if (null == data.Costs)
@@ -192,10 +199,12 @@ namespace pf_analyzer
 
             if (data.Costs.Count > 0)
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
-                MessageBoxResult answer = MessageBox.Show(
-                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?", "Konfirmasi Biaya Umum", MessageBoxButton.YesNo);
-                if (MessageBoxResult.Yes == answer)
+                MessageDialogResult answer = await this.ShowMessageAsync(
+                    "Konfirmasi Biaya Umum",
+                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    Constants.MDS_YESNO);
+                if (MessageDialogResult.Affirmative == answer)
                 {
                     data.Costs.Clear();
                 }
@@ -282,7 +291,7 @@ namespace pf_analyzer
             data.Costs.Add(cost9);
         }
 
-        private void AddDefaultCostsWithValues(object sender, RoutedEventArgs e)
+        private async void AddDefaultCostsWithValues(object sender, RoutedEventArgs e)
         {
 
             if (null == data.Costs)
@@ -292,10 +301,12 @@ namespace pf_analyzer
 
             if (data.Costs.Count > 0)
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
-                MessageBoxResult answer = MessageBox.Show(
-                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?", "Konfirmasi Biaya Umum", MessageBoxButton.YesNo);
-                if (MessageBoxResult.Yes == answer)
+                MessageDialogResult answer = await this.ShowMessageAsync(
+                    "Konfirmasi Biaya Umum",
+                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    Constants.MDS_YESNO);
+                if (MessageDialogResult.Affirmative == answer)
                 {
                     data.Costs.Clear();
                 }
@@ -383,33 +394,40 @@ namespace pf_analyzer
 
         }
 
-        private void DeleteCost(object sender, RoutedEventArgs e)
+        private async void DeleteCost(object sender, RoutedEventArgs e)
         {
             Cost cost = dgCosts.SelectedItem as Cost;
             if (null != cost)
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
                 // TODO: Validate to make sure the user doesn't delete mandatory costs
-                MessageBoxResult answer = MessageBox.Show(
-                    "Apakah Anda yakin ingin menghapus " + cost.Name + "?", "Konfirmasi Menghapus Pekerjaan", MessageBoxButton.OKCancel);
-                if (MessageBoxResult.OK == answer)
+                MessageDialogResult answer = await this.ShowMessageAsync(
+                    "Konfirmasi Menghapus Pekerjaan",
+                    "Apakah Anda yakin ingin menghapus " + cost.Name + "?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    Constants.MDS_YESNO);
+                if (MessageDialogResult.Affirmative == answer)
                 {
                     data.Costs.Remove(cost);
                 }
             }
             else
             {
-                // TODO: Use metro-styled MessageBox for theme consistency
-                MessageBox.Show("Silakan pilih dahulu pekerjaan yang akan dihapus.", "Pilih Pekerjaan");
+                await this.ShowMessageAsync(
+                    "Pilih Pekerjaan",
+                    "Silakan pilih dahulu pekerjaan yang akan dihapus.",
+                    MessageDialogStyle.Affirmative,
+                    Constants.MDS_OKAY);
             }
         }
 
-        private void DeleteAllCosts(object sender, RoutedEventArgs e)
+        private async void DeleteAllCosts(object sender, RoutedEventArgs e)
         {
-            // TODO: Use metro-styled MessageBox for theme consistency
-            MessageBoxResult answer = MessageBox.Show(
-                    "Apakah Anda yakin ingin menghapus semua pekerjaan?", "Konfirmasi Menghapus Semua Pekerjaan", MessageBoxButton.OKCancel);
-            if (MessageBoxResult.OK == answer)
+            MessageDialogResult answer = await this.ShowMessageAsync(
+                    "Konfirmasi Menghapus Semua Pekerjaan",
+                    "Apakah Anda yakin ingin menghapus semua pekerjaan?",
+                    MessageDialogStyle.AffirmativeAndNegative,
+                    Constants.MDS_YESNO);
+            if (MessageDialogResult.Affirmative == answer)
             {
                 data.Costs.Clear();
             }
@@ -431,7 +449,9 @@ namespace pf_analyzer
             }
             catch (DataValidationException dve)
             {
-                ShowMessageAsync("Mohon Periksa Kembali Data", dve.Message, MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Mohon Periksa Kembali Data", dve.Message,
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
             }
         }
 
@@ -477,41 +497,53 @@ namespace pf_analyzer
 
             if (string.IsNullOrEmpty(data.Location))
             {
-                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan nama atau alamat lokasi properti.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Data Properti Tidak Lengkap", "Silakan tentukan nama atau alamat lokasi properti.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtLocation.Focus();
                 return false;
             }
 
             if (0 == data.TotalLandArea)
             {
-                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan luas keseluruhan properti.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Data Properti Tidak Lengkap", "Silakan tentukan luas keseluruhan properti.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtLandArea.Focus();
                 return false;
             }
 
             if (0 == data.TotalRoadArea)
             {
-                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan luas jalan lingkungan yang akan dibuat.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Data Properti Tidak Lengkap", "Silakan tentukan luas jalan lingkungan yang akan dibuat.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtRoadArea.Focus();
                 return false;
             }
 
             if (0 == data.BaseLandPrice)
             {
-                ShowMessageAsync("Data Properti Tidak Lengkap", "Silakan tentukan harga dasar tanah per meter.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Data Properti Tidak Lengkap", "Silakan tentukan harga dasar tanah per meter.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtBaseLandPrice.Focus();
                 return false;
             }
 
             if (data.Lots.Count == 0)
             {
-                ShowMessageAsync("Data Kavling Masih Kosong", "Silakan tambahkan minimal satu kavling.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Data Kavling Masih Kosong", "Silakan tambahkan minimal satu kavling.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 return false;
             }
 
             else if (RecalculateRemainingLandArea() > 0)
             {
-                ShowMessageAsync("Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.", MessageDialogStyle.Affirmative);
+                this.ShowMessageAsync(
+                    "Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 return false;
             }
 
@@ -759,7 +791,7 @@ namespace pf_analyzer
 
             dgResultBasicLots.Height = lotBasedDataGridHeight;
             dgResultCosts.Height = costBasedDataGridHeight;
-            
+
             lblResultTotalCostsOfDevelopment.Content = data.TotalCostsOfDevelopment;
             lblResultEffectiveLandCost.Content = data.EffectiveLandCost;
             lblResultLandResaleProfitPercent.Content = data.LandResaleProfitPercent;
