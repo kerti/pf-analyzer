@@ -867,6 +867,14 @@ namespace pf_analyzer
             lblResultLandPriceNominalP2.Content = (((data.ProfitPoints[1] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
             lblResultLandPriceNominalP3.Content = (((data.ProfitPoints[2] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
             lblResultLandPriceNominalP4.Content = (((data.ProfitPoints[3] / 10) * data.FinalProfitNominal) + (data.TotalLandArea * data.BaseLandPrice)) / data.TotalLandArea;
+
+            // refresh datagrids
+            dgResultBasicLots.Items.Refresh();
+            dgResultCosts.Items.Refresh();
+            dgResultLotBaseSalePrice.Items.Refresh();
+            dgResultLotNettPrice.Items.Refresh();
+            dgResultLotProfit.Items.Refresh();
+            dgResultLotSalePrice.Items.Refresh();
         }
 
     }
