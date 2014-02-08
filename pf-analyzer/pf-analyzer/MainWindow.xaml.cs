@@ -403,25 +403,39 @@ namespace pf_analyzer
 
         private async void DeleteCost(object sender, RoutedEventArgs e)
         {
-            Cost cost = dgCosts.SelectedItem as Cost;
-            if (null != cost)
+            System.Collections.IList selectedCosts = dgCosts.SelectedItems;
+            if (null != selectedCosts && selectedCosts.Count > 0)
             {
                 // TODO: Validate to make sure the user doesn't delete mandatory costs
                 MessageDialogResult answer = await this.ShowMessageAsync(
                     "Konfirmasi Menghapus Pekerjaan",
-                    "Apakah Anda yakin ingin menghapus " + cost.Name + "?",
+                    "Apakah Anda yakin ingin menghapus pekerjaan-pekerjaan yang telah Anda tandai?"
+                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
+                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.",
                     MessageDialogStyle.AffirmativeAndNegative,
                     Constants.MDS_YESNO);
                 if (MessageDialogResult.Affirmative == answer)
                 {
-                    data.Costs.Remove(cost);
+                    List<Cost> costs = new List<Cost>();
+                    for (int i = 0; i < selectedCosts.Count; i++)
+                    {
+                        if (selectedCosts[i] is Cost)
+                        {
+                            Cost cost = selectedCosts[i] as Cost;
+                            costs.Add(cost);
+                        }
+                    }
+                    foreach (Cost cost in costs)
+                    {
+                        data.Costs.Remove(cost);
+                    }
                 }
             }
             else
             {
                 await this.ShowMessageAsync(
-                    "Pilih Pekerjaan",
-                    "Silakan pilih dahulu pekerjaan yang akan dihapus.",
+                    "Pilih Kavling",
+                    "Silakan pilih dahulu kavling yang akan dihapus.",
                     MessageDialogStyle.Affirmative,
                     Constants.MDS_OKAY);
             }
