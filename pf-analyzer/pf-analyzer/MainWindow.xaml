@@ -59,18 +59,18 @@
                         <Label Grid.Row="4" Grid.Column="0" Margin="5,0,5,254" Height="26" Content="Kavling" />
                         <TextBox Grid.Row="0" Grid.Column="1" Name="txtLocation" Height="20" Text="{Binding Location}" />
                         <StackPanel Grid.Row="1" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtLandArea" Width="50" Height="20" Text="{Binding TotalLandArea}"
-                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <TextBox Name="txtLandArea" Width="70" Height="20" Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtRoadArea" Width="50" Height="20" Text="{Binding TotalRoadArea}"
-                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <TextBox Name="txtRoadArea" Width="70" Height="20" Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtBaseLandPrice" Width="150" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
-                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <TextBox Name="txtBaseLandPrice" Width="90" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="/m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="4" Grid.Column="1" >
@@ -92,27 +92,28 @@
                                     <DataGridTemplateColumn Header="Luas Tanah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged}"
-                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" />
+                                                <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding LandArea}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" />
+                                                <TextBox Text="{Binding LandArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding BuildingArea}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" />
+                                                <TextBox Text="{Binding BuildingArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
@@ -239,7 +240,7 @@
                         <TextBox Name="txtLandResalePrice" Grid.Row="0" Grid.Column="3" Height="20" Margin="7,0,7,0"
                                  Text="{Binding LandResalePrice, StringFormat={}{0:f}}" TextAlignment="Right"  />
                         <TextBox Name="txtBuildingPrice" Grid.Row="1" Grid.Column="3" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding BuildingPrice, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding BuildingPrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
                         <TextBox Name="txtBuildingPermitCostPerLot" Grid.Row="2" Grid.Column="3" Height="20" Margin="7,0,7,0"
                                  Text="{Binding BuildingPermitCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
 
@@ -310,14 +311,14 @@
                                     <DataGridTemplateColumn Header="Luas Tanah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea}" />
+                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea}" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
