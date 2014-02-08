@@ -147,17 +147,31 @@ namespace pf_analyzer
 
         private async void DeleteLot(object sender, RoutedEventArgs e)
         {
-            Lot lot = dgBasicLots.SelectedItem as Lot;
-            if (null != lot)
+            System.Collections.IList selectedLots = dgBasicLots.SelectedItems;
+            if (null != selectedLots && selectedLots.Count > 0)
             {
                 MessageDialogResult answer = await this.ShowMessageAsync(
                     "Konfirmasi Menghapus Kavling",
-                    "Apakah Anda yakin ingin menghapus " + lot.Name + "?",
+                    "Apakah Anda yakin ingin menghapus kavling-kavling yang telah Anda tandai?"
+                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
+                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.",
                     MessageDialogStyle.AffirmativeAndNegative,
                     Constants.MDS_YESNO);
                 if (MessageDialogResult.Affirmative == answer)
                 {
-                    data.Lots.Remove(lot);
+                    List<Lot> lots = new List<Lot>();
+                    for (int i = 0; i < selectedLots.Count; i++)
+                    {
+                        if (selectedLots[i] is Lot)
+                        {
+                            Lot lot = selectedLots[i] as Lot;
+                            lots.Add(lot);
+                        }
+                    }
+                    foreach (Lot lot in lots)
+                    {
+                        data.Lots.Remove(lot);
+                    }
                 }
             }
             else
