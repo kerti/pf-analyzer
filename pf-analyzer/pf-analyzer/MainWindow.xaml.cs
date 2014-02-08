@@ -3,21 +3,14 @@ using MahApps.Metro.Controls.Dialogs;
 using pf_analyzer.Common;
 using pf_analyzer.DataModel;
 using pf_analyzer.Exceptions;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace pf_analyzer
 {
@@ -522,6 +515,16 @@ namespace pf_analyzer
                 return false;
             }
 
+            if (data.TotalLandArea <= data.TotalRoadArea)
+            {
+                this.ShowMessageAsync(
+                    "Mohon Periksa Kembali Data", "Silakan periksa kembali luas jalan dan fasum, "
+                        + "seharusnya jumlah keduanya masih menyisakan lahan untuk kavling.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
+                txtRoadArea.Focus();
+                return false;
+            }
+
             if (0 == data.BaseLandPrice)
             {
                 this.ShowMessageAsync(
@@ -538,13 +541,23 @@ namespace pf_analyzer
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 return false;
             }
-
-            else if (RecalculateRemainingLandArea() > 0)
+            else
             {
-                this.ShowMessageAsync(
+                decimal remainingLandArea = RecalculateRemainingLandArea();
+                if (remainingLandArea > 0)
+                {
+                    this.ShowMessageAsync(
                     "Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
-                return false;
+                    return false;
+                }
+                else if (remainingLandArea < 0)
+                {
+                    this.ShowMessageAsync(
+                    "Lahan Tersisa", "Lahan yang dialokasikan untuk kavling telah melebihi lahan yang tersisa. Silakan diperiksa kembali.",
+                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
+                    return false;
+                }
             }
 
             return result;
