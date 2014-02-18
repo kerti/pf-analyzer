@@ -666,7 +666,8 @@ namespace pf_analyzer
                 }
                 if (0 == lot.LandArea)
                 {
-                    throw new DataValidationException("Luas tanah untuk kavling \"" + lot.Name + "\" belum ditentukan.");
+                    throw new DataValidationException("Luas tanah untuk kavling \"" + lot.Name + "\" belum ditentukan."
+                        + "\n\nApabila Anda tidak ingin memperhitungkan luasan kavling tersebut, silakan hapus dari daftar kavling.");
                 }
                 if (0 == lot.BuildingArea)
                 {
@@ -703,15 +704,18 @@ namespace pf_analyzer
             {
                 if (0 == cost.UnitValue)
                 {
-                    throw new DataValidationException("Harga satuan belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
+                    throw new DataValidationException("Harga satuan belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
+                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
                 }
                 if (0 == cost.Quantity)
                 {
-                    throw new DataValidationException("Volume belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
+                    throw new DataValidationException("Volume belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
+                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
                 }
                 if (0 == cost.TotalValue)
                 {
-                    throw new DataValidationException("Biaya total belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\".");
+                    throw new DataValidationException("Biaya total belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
+                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
                 }
             }
         }

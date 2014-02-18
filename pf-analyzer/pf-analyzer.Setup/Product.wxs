@@ -61,6 +61,6 @@
       </Directory>
       <Directory Id="DesktopFolder" Name="Desktop" />
     </Directory>
-    <Icon Id="pfanalyzer.ico" SourceFile="../pf-analyzer/Resources/RadWorksIcon.ico" />
+    <Icon Id="pfanalyzer.ico" SourceFile="../pf-analyzer/Resources/pfa.ico" />
   </Fragment>
 </Wix>
