@@ -47,7 +47,8 @@
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
                             <RowDefinition Height="40" />
-                            <RowDefinition Height="290" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="250" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="160" />
@@ -56,26 +57,32 @@
                         <Label Grid.Row="0" Grid.Column="0" Margin="5" Height="26" Content="Lokasi atau Alamat" />
                         <Label Grid.Row="1" Grid.Column="0" Margin="5" Height="26" Content="Luas Tanah" />
                         <Label Grid.Row="2" Grid.Column="0" Margin="5" Height="26" Content="Luas Jalan Lingkungan" />
-                        <Label Grid.Row="3" Grid.Column="0" Margin="5" Height="26" Content="Harga Tanah" />
-                        <Label Grid.Row="4" Grid.Column="0" Margin="5,0,5,254" Height="26" Content="Kavling" />
+                        <Label Grid.Row="3" Grid.Column="0" Margin="5" Height="26" Content="Luas Fasilitas Umum" />
+                        <Label Grid.Row="4" Grid.Column="0" Margin="5" Height="26" Content="Harga Tanah" />
+                        <Label Grid.Row="5" Grid.Column="0" Margin="5,0,5,214" Height="26" Content="Kavling" />
                         <TextBox Grid.Row="0" Grid.Column="1" Name="txtLocation" Height="20" Text="{Binding Location}" />
                         <StackPanel Grid.Row="1" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtLandArea" Width="70" Height="20" Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}"
+                            <TextBox Name="txtLandArea" Width="90" Height="20" Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}"
                                      TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtRoadArea" Width="70" Height="20" Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}"
+                            <TextBox Name="txtRoadArea" Width="90" Height="20" Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}"
                                      TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3" Grid.Column="1" Height="40" Orientation="Horizontal">
+                            <TextBox Name="txtPublicFacilityArea" Width="90" Height="20" Text="{Binding TotalPublicFacilityArea, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                            <Label Content="m²" Margin="5"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="4" Grid.Column="1" Height="40" Orientation="Horizontal">
                             <TextBox Name="txtBaseLandPrice" Width="90" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
                                      TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
                             <Label Content="/m²" Margin="5"/>
                         </StackPanel>
-                        <StackPanel Grid.Row="4" Grid.Column="1" >
-                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="220"
+                        <StackPanel Grid.Row="5" Grid.Column="1" >
+                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="180"
                                       CellEditEnding="HandleSetRemainingLandAreaLabel" >
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
@@ -282,6 +289,7 @@
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="25" />
                                     <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="200" />
@@ -291,12 +299,14 @@
                                 <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Lokasi atau Alamat" />
                                 <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Luas Tanah" />
                                 <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Luas Jalan Lingkungan" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Luas Fasilitas Umum" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" Content="Harga Tanah" />
 
                                 <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation" Content="" />
                                 <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea" Content="" ContentStringFormat="{}{0:N2} m²" />
                                 <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea" Content="" ContentStringFormat="{}{0:N2} m²" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultPublicFacilityArea" Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="" ContentStringFormat="Rp {0:N2}" />
                             </Grid>
                             <Label Margin="10" Content="Data Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="140"

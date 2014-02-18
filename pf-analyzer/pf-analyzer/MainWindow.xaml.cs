@@ -6,6 +6,7 @@ using pf_analyzer.Exceptions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -25,6 +26,7 @@ namespace pf_analyzer
         private PropertyDataModel data;
         private static readonly string COST_LAND_PURCHASE = "Harga Beli Tanah";
         private static readonly string COST_ROAD_PURCHASE = "Biaya Tanah untuk Jalan";
+        private static readonly string COST_PUBLIC_FACILITY = "Biaya Tanah untuk Fasilitas Umum";
 
         #endregion
 
@@ -184,9 +186,9 @@ namespace pf_analyzer
             }
         }
 
-        private void FirstPageNext(object sender, RoutedEventArgs e)
+        private async void FirstPageNext(object sender, RoutedEventArgs e)
         {
-            if (ValidateFirstPage())
+            if (await ValidateFirstPage())
             {
                 matcPrimaryTabControl.SelectedIndex = 1;
             }
@@ -241,61 +243,72 @@ namespace pf_analyzer
                 data.Costs.Add(cost2);
             }
 
-            Cost cost3 = new Cost();
-            cost3.Name = "Drainase";
-            cost3.Quantity = 0;
-            cost3.Unit = "m";
-            cost3.UnitValue = 0;
-            cost3.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost3);
+            if (!names.Contains(COST_PUBLIC_FACILITY))
+            {
+                Cost cost3 = new Cost();
+                cost3.Name = COST_PUBLIC_FACILITY;
+                cost3.Quantity = data.TotalPublicFacilityArea;
+                cost3.Unit = "m²";
+                cost3.UnitValue = data.BaseLandPrice;
+                cost3.PropertyChanged += Cost_PropertyChanged;
+                data.Costs.Add(cost3);
+            }
 
             Cost cost4 = new Cost();
-            cost4.Name = "Resapan";
+            cost4.Name = "Drainase";
             cost4.Quantity = 0;
-            cost4.Unit = "bh";
+            cost4.Unit = "m";
             cost4.UnitValue = 0;
             cost4.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost4);
 
             Cost cost5 = new Cost();
-            cost5.Name = "Urug";
+            cost5.Name = "Resapan";
             cost5.Quantity = 0;
-            cost5.Unit = "ls";
+            cost5.Unit = "bh";
             cost5.UnitValue = 0;
             cost5.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost5);
 
             Cost cost6 = new Cost();
-            cost6.Name = "Pembatas Kavling";
+            cost6.Name = "Urug";
             cost6.Quantity = 0;
-            cost6.Unit = "m";
+            cost6.Unit = "ls";
             cost6.UnitValue = 0;
             cost6.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost6);
 
             Cost cost7 = new Cost();
-            cost7.Name = "Kontribusi Wilayah";
+            cost7.Name = "Pembatas Kavling";
             cost7.Quantity = 0;
-            cost7.Unit = "unit";
+            cost7.Unit = "m";
             cost7.UnitValue = 0;
             cost7.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost7);
 
             Cost cost8 = new Cost();
-            cost8.Name = "Biaya Pecah";
+            cost8.Name = "Kontribusi Wilayah";
             cost8.Quantity = 0;
-            cost8.Unit = "bh";
+            cost8.Unit = "unit";
             cost8.UnitValue = 0;
             cost8.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost8);
 
             Cost cost9 = new Cost();
-            cost9.Name = "AJB";
+            cost9.Name = "Biaya Pecah";
             cost9.Quantity = 0;
             cost9.Unit = "bh";
             cost9.UnitValue = 0;
             cost9.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost9);
+
+            Cost cost10 = new Cost();
+            cost10.Name = "AJB";
+            cost10.Quantity = 0;
+            cost10.Unit = "bh";
+            cost10.UnitValue = 0;
+            cost10.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost10);
         }
 
         private async void AddDefaultCostsWithValues(object sender, RoutedEventArgs e)
@@ -343,61 +356,72 @@ namespace pf_analyzer
                 data.Costs.Add(cost2);
             }
 
-            Cost cost3 = new Cost();
-            cost3.Name = "Drainase";
-            cost3.Quantity = 80;
-            cost3.Unit = "m";
-            cost3.UnitValue = 50000;
-            cost3.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost3);
+            if (!names.Contains(COST_PUBLIC_FACILITY))
+            {
+                Cost cost3 = new Cost();
+                cost3.Name = COST_PUBLIC_FACILITY;
+                cost3.Quantity = data.TotalPublicFacilityArea;
+                cost3.Unit = "m²";
+                cost3.UnitValue = data.BaseLandPrice;
+                cost3.PropertyChanged += Cost_PropertyChanged;
+                data.Costs.Add(cost3);
+            }
 
             Cost cost4 = new Cost();
-            cost4.Name = "Resapan";
-            cost4.Quantity = 2;
-            cost4.Unit = "bh";
-            cost4.UnitValue = 1000000;
+            cost4.Name = "Drainase";
+            cost4.Quantity = 80;
+            cost4.Unit = "m";
+            cost4.UnitValue = 50000;
             cost4.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost4);
 
             Cost cost5 = new Cost();
-            cost5.Name = "Urug";
-            cost5.Quantity = 1;
-            cost5.Unit = "ls";
-            cost5.UnitValue = 2000000;
+            cost5.Name = "Resapan";
+            cost5.Quantity = 2;
+            cost5.Unit = "bh";
+            cost5.UnitValue = 1000000;
             cost5.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost5);
 
             Cost cost6 = new Cost();
-            cost6.Name = "Pembatas Kavling";
-            cost6.Quantity = 68;
-            cost6.Unit = "m";
-            cost6.UnitValue = 90000;
+            cost6.Name = "Urug";
+            cost6.Quantity = 1;
+            cost6.Unit = "ls";
+            cost6.UnitValue = 2000000;
             cost6.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost6);
 
             Cost cost7 = new Cost();
-            cost7.Name = "Kontribusi Wilayah";
-            cost7.Quantity = data.Lots.Count;
-            cost7.Unit = "unit";
-            cost7.UnitValue = 1000000;
+            cost7.Name = "Pembatas Kavling";
+            cost7.Quantity = 68;
+            cost7.Unit = "m";
+            cost7.UnitValue = 90000;
             cost7.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost7);
 
             Cost cost8 = new Cost();
-            cost8.Name = "Biaya Pecah";
-            cost8.Quantity = data.Lots.Count + 1;
-            cost8.Unit = "bh";
-            cost8.UnitValue = 2000000;
+            cost8.Name = "Kontribusi Wilayah";
+            cost8.Quantity = data.Lots.Count;
+            cost8.Unit = "unit";
+            cost8.UnitValue = 1000000;
             cost8.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost8);
 
             Cost cost9 = new Cost();
-            cost9.Name = "AJB";
-            cost9.Quantity = data.Lots.Count;
+            cost9.Name = "Biaya Pecah";
+            cost9.Quantity = data.Lots.Count + 1;
             cost9.Unit = "bh";
-            cost9.UnitValue = 2500000;
+            cost9.UnitValue = 2000000;
             cost9.PropertyChanged += Cost_PropertyChanged;
             data.Costs.Add(cost9);
+
+            Cost cost10 = new Cost();
+            cost10.Name = "AJB";
+            cost10.Quantity = data.Lots.Count;
+            cost10.Unit = "bh";
+            cost10.UnitValue = 2500000;
+            cost10.PropertyChanged += Cost_PropertyChanged;
+            data.Costs.Add(cost10);
 
         }
 
@@ -499,7 +523,7 @@ namespace pf_analyzer
                 {
                     totalAlottedLandArea += lot.LandArea;
                 }
-                return data.TotalLandArea - data.TotalRoadArea - totalAlottedLandArea;
+                return data.TotalLandArea - data.TotalRoadArea - data.TotalPublicFacilityArea - totalAlottedLandArea;
             }
             else
             {
@@ -507,7 +531,7 @@ namespace pf_analyzer
             }
         }
 
-        private bool ValidateFirstPage()
+        private async Task<bool> ValidateFirstPage()
         {
             bool result = true;
 
@@ -518,7 +542,7 @@ namespace pf_analyzer
 
             if (string.IsNullOrEmpty(data.Location))
             {
-                this.ShowMessageAsync(
+                await this.ShowMessageAsync(
                     "Data Properti Tidak Lengkap", "Silakan tentukan nama atau alamat lokasi properti.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtLocation.Focus();
@@ -527,25 +551,16 @@ namespace pf_analyzer
 
             if (0 == data.TotalLandArea)
             {
-                this.ShowMessageAsync(
+                await this.ShowMessageAsync(
                     "Data Properti Tidak Lengkap", "Silakan tentukan luas keseluruhan properti.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtLandArea.Focus();
                 return false;
             }
 
-            if (0 == data.TotalRoadArea)
+            if (data.TotalLandArea <= (data.TotalRoadArea + data.TotalPublicFacilityArea))
             {
-                this.ShowMessageAsync(
-                    "Data Properti Tidak Lengkap", "Silakan tentukan luas jalan lingkungan yang akan dibuat.",
-                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
-                txtRoadArea.Focus();
-                return false;
-            }
-
-            if (data.TotalLandArea <= data.TotalRoadArea)
-            {
-                this.ShowMessageAsync(
+                await this.ShowMessageAsync(
                     "Mohon Periksa Kembali Data", "Silakan periksa kembali luas jalan dan fasum, "
                         + "seharusnya jumlah keduanya masih menyisakan lahan untuk kavling.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
@@ -555,7 +570,7 @@ namespace pf_analyzer
 
             if (0 == data.BaseLandPrice)
             {
-                this.ShowMessageAsync(
+                await this.ShowMessageAsync(
                     "Data Properti Tidak Lengkap", "Silakan tentukan harga dasar tanah per meter.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtBaseLandPrice.Focus();
@@ -564,7 +579,7 @@ namespace pf_analyzer
 
             if (data.Lots.Count == 0)
             {
-                this.ShowMessageAsync(
+                await this.ShowMessageAsync(
                     "Data Kavling Masih Kosong", "Silakan tambahkan minimal satu kavling.",
                     MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 return false;
@@ -574,16 +589,16 @@ namespace pf_analyzer
                 decimal remainingLandArea = RecalculateRemainingLandArea();
                 if (remainingLandArea > 0)
                 {
-                    this.ShowMessageAsync(
-                    "Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.",
-                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
+                    await this.ShowMessageAsync(
+                        "Lahan Tersisa", "Masih ada lahan tersisa yang belum dialokasikan ke dalam salah satu kavling. Silakan diperiksa kembali.",
+                        MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                     return false;
                 }
                 else if (remainingLandArea < 0)
                 {
-                    this.ShowMessageAsync(
-                    "Lahan Tersisa", "Lahan yang dialokasikan untuk kavling telah melebihi lahan yang tersisa. Silakan diperiksa kembali.",
-                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
+                    await this.ShowMessageAsync(
+                        "Lahan Tersisa", "Lahan yang dialokasikan untuk kavling telah melebihi lahan yang tersisa. Silakan diperiksa kembali.",
+                        MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                     return false;
                 }
             }
@@ -699,6 +714,11 @@ namespace pf_analyzer
                 throw new DataValidationException("Biaya pembelian tanah untuk jalan lingkungan belum ditentukan.");
             }
 
+            if (!costNames.Contains(COST_PUBLIC_FACILITY))
+            {
+                throw new DataValidationException("Biaya pembelian tanah untuk fasilitas umum belum ditentukan.");
+            }
+
             // verify all costs have proper unit value, quantity, and total value set
             foreach (Cost cost in data.Costs)
             {
@@ -748,7 +768,7 @@ namespace pf_analyzer
             }
 
             // calculate effective land cost = total cost of development / (total land area - total road area)
-            data.EffectiveLandCost = data.TotalCostsOfDevelopment / (data.TotalLandArea - data.TotalRoadArea);
+            data.EffectiveLandCost = data.TotalCostsOfDevelopment / (data.TotalLandArea - (data.TotalRoadArea + data.TotalPublicFacilityArea));
 
             // calculate land resale price = effective land cost * (1 + (land resale profit in percent / 100))
             data.LandResalePrice = data.EffectiveLandCost * (1 + (data.LandResaleProfitPercent / 100));
@@ -832,6 +852,7 @@ namespace pf_analyzer
             lblResultLocation.Content = data.Location;
             lblResultLandArea.Content = data.TotalLandArea;
             lblResultRoadArea.Content = data.TotalRoadArea;
+            lblResultPublicFacilityArea.Content = data.TotalPublicFacilityArea;
             lblResultBaseLandPrice.Content = data.BaseLandPrice;
 
             dgResultBasicLots.Height = lotBasedDataGridHeight;

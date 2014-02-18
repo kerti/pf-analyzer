@@ -30,6 +30,11 @@ namespace pf_analyzer.DataModel
         public decimal TotalRoadArea { get; set; }
 
         /// <summary>
+        /// Total land area set aside for public facilities such as parks or recreation areas.
+        /// </summary>
+        public decimal TotalPublicFacilityArea { get; set; }
+
+        /// <summary>
         /// The price of the property per meter squared as set by the seller.
         /// </summary>
         public decimal BaseLandPrice { get; set; }

@@ -9,7 +9,7 @@ namespace pf_analyzer.DataModel
     /// <summary>
     /// This class represents a price point at which a lot is to be sold.
     /// </summary>
-    public class PricePoint
+    class PricePoint : BaseModel
     {
 
         /// <summary>
