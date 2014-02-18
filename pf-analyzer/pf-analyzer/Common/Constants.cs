@@ -1,14 +1,19 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pf_analyzer.Common
 {
     public static class Constants
     {
+
+        #region Cost Name Constants
+
+        public static readonly string COST_LAND_PURCHASE = "Harga Beli Tanah";
+        public static readonly string COST_ROAD_PURCHASE = "Biaya Tanah untuk Jalan";
+        public static readonly string COST_PUBLIC_FACILITY = "Biaya Tanah untuk Fasilitas Umum";
+
+        #endregion
+
+        #region Dialog Screen Settings
 
         public static readonly MetroDialogSettings MDS_OKAY = new MetroDialogSettings()
         {
@@ -27,5 +32,8 @@ namespace pf_analyzer.Common
             NegativeButtonText = "Tidak",
             FirstAuxiliaryButtonText = "Batal"
         };
+
+        #endregion
+
     }
 }

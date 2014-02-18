@@ -3,8 +3,11 @@ using MahApps.Metro.Controls.Dialogs;
 using pf_analyzer.Common;
 using pf_analyzer.DataModel;
 using pf_analyzer.Exceptions;
+using pf_analyzer.Extensions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,9 +27,6 @@ namespace pf_analyzer
         #region Private Properties
 
         private PropertyDataModel data;
-        private static readonly string COST_LAND_PURCHASE = "Harga Beli Tanah";
-        private static readonly string COST_ROAD_PURCHASE = "Biaya Tanah untuk Jalan";
-        private static readonly string COST_PUBLIC_FACILITY = "Biaya Tanah untuk Fasilitas Umum";
 
         #endregion
 
@@ -48,64 +48,11 @@ namespace pf_analyzer
             // Set the cell style for the grid
             this.dgBasicLots.CellStyle = cellStyle;
 
-
-            InitializeDataModel();
-            //InitializeDummyData();
-            this.DataContext = data;
-            RecalculateRemainingLandArea();
-        }
-
-        #region Dummy Data
-
-        private void InitializeDataModel()
-        {
             data = new PropertyDataModel();
-            InitializeCosts();
-            data.LandResaleProfitPercent = 10;
-            data.ValueAddedTaxPercent = 5;
-            data.FeePercent = (decimal)2.5;
-            data.ProfitPoints = new decimal[] { 15, 20, 25, 30 };
-            data.FinalProfitPercentage = 10;
+            data.Initialize();
+            this.DataContext = data;
+            data.RecalculateRemainingLandArea();
         }
-
-        private void InitializeDummyData()
-        {
-            data.Location = "Karangwaru";
-            data.TotalLandArea = 609;
-            data.TotalRoadArea = 138;
-            data.BaseLandPrice = 1100000;
-            data.Lots = new ObservableCollection<Lot>();
-
-            Lot lot1 = new Lot();
-            lot1.Name = "Kavling A";
-            lot1.LandArea = 158;
-            lot1.BuildingArea = 60;
-            data.Lots.Add(lot1);
-
-            Lot lot2 = new Lot();
-            lot2.Name = "Kavling B";
-            lot2.LandArea = 81;
-            lot2.BuildingArea = 45;
-            data.Lots.Add(lot2);
-
-            Lot lot3 = new Lot();
-            lot3.Name = "Kavling C";
-            lot3.LandArea = 90;
-            lot3.BuildingArea = 45;
-            data.Lots.Add(lot3);
-
-            Lot lot4 = new Lot();
-            lot4.Name = "Kavling D";
-            lot4.LandArea = 142;
-            lot4.BuildingArea = 60;
-            data.Lots.Add(lot4);
-
-            data.BuildingPrice = 1750000;
-            data.BuildingPermitCostPerLot = 2500000;
-            data.PromoCostPerLot = 2500000;
-        }
-
-        #endregion
 
         #region Control Events
 
@@ -144,7 +91,7 @@ namespace pf_analyzer
 
         private void SetRemainingLandAreaLabel()
         {
-            lblRemainingAreaNominal.Content = RecalculateRemainingLandArea().ToString();
+            lblRemainingAreaNominal.Content = data.RecalculateRemainingLandArea().ToString();
         }
 
         private async void DeleteLot(object sender, RoutedEventArgs e)
@@ -200,11 +147,7 @@ namespace pf_analyzer
 
         private async void AddDefaultCosts(object sender, RoutedEventArgs e)
         {
-
-            if (null == data.Costs)
-            {
-                InitializeCosts();
-            }
+            bool clearBeforeAdd = false;
 
             if (data.Costs.Count > 0)
             {
@@ -213,216 +156,10 @@ namespace pf_analyzer
                     "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?",
                     MessageDialogStyle.AffirmativeAndNegative,
                     Constants.MDS_YESNO);
-                if (MessageDialogResult.Affirmative == answer)
-                {
-                    data.Costs.Clear();
-                }
+                clearBeforeAdd = MessageDialogResult.Affirmative == answer;
             }
 
-            List<string> names = (from c in data.Costs select c.Name).ToList();
-
-            if (!names.Contains(COST_LAND_PURCHASE))
-            {
-                Cost cost1 = new Cost();
-                cost1.Name = COST_LAND_PURCHASE;
-                cost1.Quantity = data.TotalLandArea;
-                cost1.Unit = "m²";
-                cost1.UnitValue = data.BaseLandPrice;
-                cost1.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost1);
-            }
-
-            if (!names.Contains(COST_ROAD_PURCHASE))
-            {
-                Cost cost2 = new Cost();
-                cost2.Name = COST_ROAD_PURCHASE;
-                cost2.Quantity = data.TotalRoadArea;
-                cost2.Unit = "m²";
-                cost2.UnitValue = data.BaseLandPrice;
-                cost2.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost2);
-            }
-
-            if (!names.Contains(COST_PUBLIC_FACILITY))
-            {
-                Cost cost3 = new Cost();
-                cost3.Name = COST_PUBLIC_FACILITY;
-                cost3.Quantity = data.TotalPublicFacilityArea;
-                cost3.Unit = "m²";
-                cost3.UnitValue = data.BaseLandPrice;
-                cost3.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost3);
-            }
-
-            Cost cost4 = new Cost();
-            cost4.Name = "Drainase";
-            cost4.Quantity = 0;
-            cost4.Unit = "m";
-            cost4.UnitValue = 0;
-            cost4.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost4);
-
-            Cost cost5 = new Cost();
-            cost5.Name = "Resapan";
-            cost5.Quantity = 0;
-            cost5.Unit = "bh";
-            cost5.UnitValue = 0;
-            cost5.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost5);
-
-            Cost cost6 = new Cost();
-            cost6.Name = "Urug";
-            cost6.Quantity = 0;
-            cost6.Unit = "ls";
-            cost6.UnitValue = 0;
-            cost6.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost6);
-
-            Cost cost7 = new Cost();
-            cost7.Name = "Pembatas Kavling";
-            cost7.Quantity = 0;
-            cost7.Unit = "m";
-            cost7.UnitValue = 0;
-            cost7.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost7);
-
-            Cost cost8 = new Cost();
-            cost8.Name = "Kontribusi Wilayah";
-            cost8.Quantity = 0;
-            cost8.Unit = "unit";
-            cost8.UnitValue = 0;
-            cost8.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost8);
-
-            Cost cost9 = new Cost();
-            cost9.Name = "Biaya Pecah";
-            cost9.Quantity = 0;
-            cost9.Unit = "bh";
-            cost9.UnitValue = 0;
-            cost9.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost9);
-
-            Cost cost10 = new Cost();
-            cost10.Name = "AJB";
-            cost10.Quantity = 0;
-            cost10.Unit = "bh";
-            cost10.UnitValue = 0;
-            cost10.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost10);
-        }
-
-        private async void AddDefaultCostsWithValues(object sender, RoutedEventArgs e)
-        {
-
-            if (null == data.Costs)
-            {
-                InitializeCosts();
-            }
-
-            if (data.Costs.Count > 0)
-            {
-                MessageDialogResult answer = await this.ShowMessageAsync(
-                    "Konfirmasi Biaya Umum",
-                    "Anda telah memilih untuk menambahkan biaya-biaya umum. Hapus semua biaya yang ada sebelum lanjut?",
-                    MessageDialogStyle.AffirmativeAndNegative,
-                    Constants.MDS_YESNO);
-                if (MessageDialogResult.Affirmative == answer)
-                {
-                    data.Costs.Clear();
-                }
-            }
-
-            List<string> names = (from c in data.Costs select c.Name).ToList();
-
-            if (!names.Contains(COST_LAND_PURCHASE))
-            {
-                Cost cost1 = new Cost();
-                cost1.Name = COST_LAND_PURCHASE;
-                cost1.Quantity = data.TotalLandArea;
-                cost1.Unit = "m²";
-                cost1.UnitValue = data.BaseLandPrice;
-                cost1.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost1);
-            }
-
-            if (!names.Contains(COST_ROAD_PURCHASE))
-            {
-                Cost cost2 = new Cost();
-                cost2.Name = COST_ROAD_PURCHASE;
-                cost2.Quantity = data.TotalRoadArea;
-                cost2.Unit = "m²";
-                cost2.UnitValue = data.BaseLandPrice;
-                cost2.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost2);
-            }
-
-            if (!names.Contains(COST_PUBLIC_FACILITY))
-            {
-                Cost cost3 = new Cost();
-                cost3.Name = COST_PUBLIC_FACILITY;
-                cost3.Quantity = data.TotalPublicFacilityArea;
-                cost3.Unit = "m²";
-                cost3.UnitValue = data.BaseLandPrice;
-                cost3.PropertyChanged += Cost_PropertyChanged;
-                data.Costs.Add(cost3);
-            }
-
-            Cost cost4 = new Cost();
-            cost4.Name = "Drainase";
-            cost4.Quantity = 80;
-            cost4.Unit = "m";
-            cost4.UnitValue = 50000;
-            cost4.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost4);
-
-            Cost cost5 = new Cost();
-            cost5.Name = "Resapan";
-            cost5.Quantity = 2;
-            cost5.Unit = "bh";
-            cost5.UnitValue = 1000000;
-            cost5.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost5);
-
-            Cost cost6 = new Cost();
-            cost6.Name = "Urug";
-            cost6.Quantity = 1;
-            cost6.Unit = "ls";
-            cost6.UnitValue = 2000000;
-            cost6.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost6);
-
-            Cost cost7 = new Cost();
-            cost7.Name = "Pembatas Kavling";
-            cost7.Quantity = 68;
-            cost7.Unit = "m";
-            cost7.UnitValue = 90000;
-            cost7.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost7);
-
-            Cost cost8 = new Cost();
-            cost8.Name = "Kontribusi Wilayah";
-            cost8.Quantity = data.Lots.Count;
-            cost8.Unit = "unit";
-            cost8.UnitValue = 1000000;
-            cost8.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost8);
-
-            Cost cost9 = new Cost();
-            cost9.Name = "Biaya Pecah";
-            cost9.Quantity = data.Lots.Count + 1;
-            cost9.Unit = "bh";
-            cost9.UnitValue = 2000000;
-            cost9.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost9);
-
-            Cost cost10 = new Cost();
-            cost10.Name = "AJB";
-            cost10.Quantity = data.Lots.Count;
-            cost10.Unit = "bh";
-            cost10.UnitValue = 2500000;
-            cost10.PropertyChanged += Cost_PropertyChanged;
-            data.Costs.Add(cost10);
-
+            data.AddDefaultCosts(clearBeforeAdd, Costs_CollectionChanged, Cost_PropertyChanged); 
         }
 
         private async void DeleteCost(object sender, RoutedEventArgs e)
@@ -487,8 +224,8 @@ namespace pf_analyzer
         {
             try
             {
-                ValidateAllData();
-                RecalculateAllData();
+                data.Validate();
+                data.Calculate();
                 SetupResultFields();
                 matcPrimaryTabControl.SelectedIndex = 2;
             }
@@ -508,28 +245,6 @@ namespace pf_analyzer
         #endregion
 
         #endregion
-
-        private decimal RecalculateRemainingLandArea()
-        {
-            if (null == data.Lots)
-            {
-                data.Lots = new ObservableCollection<Lot>();
-            }
-
-            if (data.TotalLandArea > 0)
-            {
-                int totalAlottedLandArea = 0;
-                foreach (Lot lot in data.Lots)
-                {
-                    totalAlottedLandArea += lot.LandArea;
-                }
-                return data.TotalLandArea - data.TotalRoadArea - data.TotalPublicFacilityArea - totalAlottedLandArea;
-            }
-            else
-            {
-                return 0;
-            }
-        }
 
         private async Task<bool> ValidateFirstPage()
         {
@@ -586,7 +301,7 @@ namespace pf_analyzer
             }
             else
             {
-                decimal remainingLandArea = RecalculateRemainingLandArea();
+                decimal remainingLandArea = data.RecalculateRemainingLandArea();
                 if (remainingLandArea > 0)
                 {
                     await this.ShowMessageAsync(
@@ -606,242 +321,22 @@ namespace pf_analyzer
             return result;
         }
 
-        private void ValidateAllData()
-        {
-            // verify property variables are complete
-            if (string.IsNullOrEmpty(data.Location))
-            {
-                throw new DataValidationException("Lokasi properti belum ditentukan.");
-            }
-
-            if (0 == data.TotalLandArea)
-            {
-                throw new DataValidationException("Luas total properti belum ditentukan.");
-            }
-
-            if (0 == data.TotalRoadArea)
-            {
-                // TODO: This shouldn't be a problem since a block of properties may not have inner roads on its own.
-            }
-
-            if (0 == data.BaseLandPrice)
-            {
-                throw new DataValidationException("Harga dasar tanah belum ditentukan.");
-            }
-
-            if (0 == data.BuildingPrice)
-            {
-                throw new DataValidationException("Harga bangunan belum ditentukan.");
-            }
-
-            // verify base prices and costs are complete
-            if (0 == data.LandResaleProfitPercent)
-            {
-                // TODO: This shouldn't be a problem since theoretically it's possible to sell the land without profit.
-            }
-
-            if (0 == data.BuildingPermitCostPerLot)
-            {
-                throw new DataValidationException("Biaya IMB per kavling belum ditentukan.");
-            }
-
-            if (0 == data.PromoCostPerLot)
-            {
-                // TODO: This shouldn't be a problem since theoretically it's possible to defer promo costs to another budget.
-            }
-
-            if (0 == data.FeePercent)
-            {
-                throw new DataValidationException("Persen fee belum ditentukan.");
-            }
-
-            // verify at least one lot is created
-            if (null == data.Lots)
-            {
-                data.Lots = new ObservableCollection<Lot>();
-                throw new DataValidationException("Belum ada kavling yang ditentukan.");
-            }
-            else if (0 == data.Lots.Count)
-            {
-                throw new DataValidationException("Belum ada kavling yang ditentukan.");
-            }
-
-            // verify all land area has been allocated
-            if (RecalculateRemainingLandArea() > 0)
-            {
-                throw new DataValidationException("Belum semua luasan tanah telah terpakai baik untuk jalan lingkungan atau untuk kavling.");
-            }
-
-            // verify all lots have complete initial variables
-            foreach (Lot lot in data.Lots)
-            {
-                if (string.IsNullOrEmpty(lot.Name))
-                {
-                    throw new DataValidationException("Salah satu nama kavling masih kosong.");
-                }
-                if (0 == lot.LandArea)
-                {
-                    throw new DataValidationException("Luas tanah untuk kavling \"" + lot.Name + "\" belum ditentukan."
-                        + "\n\nApabila Anda tidak ingin memperhitungkan luasan kavling tersebut, silakan hapus dari daftar kavling.");
-                }
-                if (0 == lot.BuildingArea)
-                {
-                    // TODO: This shouldn't be a problem since a lot may be sold as land only with no buildings planned.
-                }
-            }
-
-            // verify at least one cost is created
-            if (null == data.Costs)
-            {
-                InitializeCosts();
-            }
-
-            if (0 == data.Costs.Count)
-            {
-                throw new DataValidationException("Biaya-biaya belum ditentukan.");
-            }
-
-            // verify land purchase cost and road purchase cost are created
-            List<string> costNames = (from c in data.Costs select c.Name).ToList();
-
-            if (!costNames.Contains(COST_LAND_PURCHASE))
-            {
-                throw new DataValidationException("Biaya pembelian tanah belum ditentukan.");
-            }
-
-            if (!costNames.Contains(COST_ROAD_PURCHASE))
-            {
-                throw new DataValidationException("Biaya pembelian tanah untuk jalan lingkungan belum ditentukan.");
-            }
-
-            if (!costNames.Contains(COST_PUBLIC_FACILITY))
-            {
-                throw new DataValidationException("Biaya pembelian tanah untuk fasilitas umum belum ditentukan.");
-            }
-
-            // verify all costs have proper unit value, quantity, and total value set
-            foreach (Cost cost in data.Costs)
-            {
-                if (0 == cost.UnitValue)
-                {
-                    throw new DataValidationException("Harga satuan belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
-                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
-                }
-                if (0 == cost.Quantity)
-                {
-                    throw new DataValidationException("Volume belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
-                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
-                }
-                if (0 == cost.TotalValue)
-                {
-                    throw new DataValidationException("Biaya total belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
-                        + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
-                }
-            }
-        }
-
-        private void Cost_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Cost_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateSecondPageOnDataChange();
         }
 
-        private void Costs_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Costs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateSecondPageOnDataChange();
         }
 
         private void UpdateSecondPageOnDataChange()
         {
-            RecalculateAllData();
+            data.Calculate();
             txtTotalCosts.Text = data.TotalCostsOfDevelopment.ToString("#,###.00");
             txtEffectiveLandCost.Text = data.EffectiveLandCost.ToString("#,###.00");
             txtLandResalePrice.Text = data.LandResalePrice.ToString("#,###.00");
-        }
-
-        private void RecalculateAllData()
-        {
-            // calculate total cost of development = sum of all cost total values
-            data.TotalCostsOfDevelopment = 0;
-            foreach (Cost cost in data.Costs)
-            {
-                data.TotalCostsOfDevelopment += cost.TotalValue;
-            }
-
-            // calculate effective land cost = total cost of development / (total land area - total road area)
-            data.EffectiveLandCost = data.TotalCostsOfDevelopment / (data.TotalLandArea - (data.TotalRoadArea + data.TotalPublicFacilityArea));
-
-            // calculate land resale price = effective land cost * (1 + (land resale profit in percent / 100))
-            data.LandResalePrice = data.EffectiveLandCost * (1 + (data.LandResaleProfitPercent / 100));
-
-            // for each lot
-            data.TotalBaseSalePrice = 0;
-            foreach (Lot lot in data.Lots)
-            {
-
-                /// set common costs
-                lot.BuildingPermitCost = data.BuildingPermitCostPerLot;
-                lot.PromoCost = data.PromoCostPerLot;
-
-                //// calculate total building price = building price * building area
-                lot.TotalBuildingCost = data.BuildingPrice * lot.BuildingArea;
-
-                //// calculate total land price = land resale price * total land area
-                lot.TotalLandCost = data.LandResalePrice * lot.LandArea;
-
-                //// calculate total nett price = total building price
-                //// + total land price + building permit + promo cost
-                lot.TotalNettPrice = lot.TotalBuildingCost + lot.TotalLandCost
-                    + data.BuildingPermitCostPerLot + data.PromoCostPerLot;
-
-                /// calculate value added tax = %VAT * total nett price
-                lot.ValueAddedTax = (data.ValueAddedTaxPercent / 100) * lot.TotalNettPrice;
-
-                /// calculate fee = %fee * total nett price
-                lot.Fee = (data.FeePercent / 100) * lot.TotalNettPrice;
-
-                /// calculate base sale price = total nett price + VAT + fee
-                lot.BaseSalePrice = lot.TotalNettPrice + lot.ValueAddedTax + lot.Fee;
-
-                //// calculate price points
-                lot.PricePoints = new ObservableCollection<PricePoint>();
-                for (int i = 0; i < data.ProfitPoints.Count(); i++)
-                {
-                    PricePoint pricePoint = new PricePoint();
-                    pricePoint.BaseSalePrice = lot.BaseSalePrice;
-                    pricePoint.ProfitAssumptionPercent = data.ProfitPoints[i];
-                    pricePoint.ProfitNominal = pricePoint.BaseSalePrice * (pricePoint.ProfitAssumptionPercent / 100);
-                    pricePoint.FinalPriceNominal = pricePoint.BaseSalePrice + pricePoint.ProfitNominal;
-                    lot.PricePoints.Add(pricePoint);
-                }
-
-                //// calculate sum of base sale price
-                data.TotalBaseSalePrice += lot.BaseSalePrice;
-
-            }
-
-            // calculate final profit = total base sale price * final profit percentage / 100
-            data.FinalProfitNominal = data.TotalBaseSalePrice * (data.FinalProfitPercentage / 100);
-
-            // calculate total actual land value = total land purchase cost + final profit
-            data.TotalActualLandValue = 0;
-            foreach (Cost cost in data.Costs)
-            {
-                if (COST_LAND_PURCHASE.Equals(cost.Name))
-                {
-                    data.TotalActualLandValue = cost.TotalValue + data.FinalProfitNominal;
-                    break;
-                }
-            }
-
-            // calculate actual land value = total actual land value / total land area
-            data.ActualLandValue = data.TotalActualLandValue / data.TotalLandArea;
-
-        }
-
-        private void InitializeCosts()
-        {
-            data.Costs = new ObservableCollection<Cost>();
-            data.Costs.CollectionChanged += Costs_CollectionChanged;
         }
 
         private void SetupResultFields()

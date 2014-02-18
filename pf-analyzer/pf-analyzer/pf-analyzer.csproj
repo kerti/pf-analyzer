@@ -107,6 +107,7 @@
     <Compile Include="DataModel\PropertyDataModel.cs" />
     <Compile Include="Exceptions\DataValidationException.cs" />
     <Compile Include="Exceptions\NonSystemException.cs" />
+    <Compile Include="Extensions\PropertyDataModelExtension.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
