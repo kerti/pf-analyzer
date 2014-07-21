@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.Linq.Expressions;
 
 namespace pf_analyzer.DataModel
 {
-    class BaseModel : INotifyPropertyChanged
+    public class BaseModel : INotifyPropertyChanged
     {
 
         #region Properties
@@ -18,11 +21,11 @@ namespace pf_analyzer.DataModel
         #region Methods
 
         /// <summary>
-        /// Invoke thw PropertyChanged event to notify that a property
+        /// Invoke the PropertyChanged event to notify that a property
         /// has changed.
         /// </summary>
         /// <param name="propertyName"></param>
-        protected void NotifyPropertyChanged(String propertyName)
+        protected void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
             {

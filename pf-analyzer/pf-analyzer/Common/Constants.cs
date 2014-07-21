@@ -5,6 +5,13 @@ namespace pf_analyzer.Common
     public static class Constants
     {
 
+        #region File Type
+
+        public static readonly string FILE_EXTENSION = ".pfz";
+        public static readonly string FILE_TYPE = "PFZ Files";
+
+        #endregion
+
         #region Cost Name Constants
 
         public static readonly string COST_LAND_PURCHASE = "Harga Beli Tanah";

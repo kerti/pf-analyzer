@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace pf_analyzer.DataModel
 {
     /// <summary>
     /// This class represents a lot.
     /// </summary>
-    class Lot : BaseModel
+    public class Lot : BaseModel
     {
         /// <summary>
         /// The name of the lot.

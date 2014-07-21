@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace pf_analyzer.DataModel
 {
 
@@ -12,7 +6,7 @@ namespace pf_analyzer.DataModel
     /// This class represents all costs associated with building houses on
     /// every lot in a property.
     /// </summary>
-    class Cost : BaseModel
+    public class Cost : BaseModel
     {
 
         #region Public Properties
@@ -31,6 +25,7 @@ namespace pf_analyzer.DataModel
                 name = value;
             }
         }
+
         /// <summary>
         /// How much of this is required.
         /// </summary>
@@ -91,7 +86,14 @@ namespace pf_analyzer.DataModel
             set
             {
                 totalValue = value;
-                unitValue = value / quantity;
+                if (quantity > 0)
+                {
+                    unitValue = value / quantity;
+                }
+                else
+                {
+                    unitValue = 0;
+                }
                 NotifyPropertyChanged("UnitValue");
             }
         }

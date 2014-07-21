@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace pf_analyzer.DataModel
 {
     /// <summary>
     /// This class represents a price point at which a lot is to be sold.
     /// </summary>
-    class PricePoint : BaseModel
+    public class PricePoint : BaseModel
     {
 
         /// <summary>

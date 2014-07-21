@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace pf_analyzer.DataModel
 {
@@ -11,8 +6,9 @@ namespace pf_analyzer.DataModel
     /// This class represents the all the data associated with a
     /// property that is to be analyzed.
     /// </summary>
-    class PropertyDataModel : BaseModel
+    public class PropertyDataModel : BaseModel
     {
+
         /// <summary>
         /// The location of the property. Could be a name or an address or an
         /// abbreviated address.

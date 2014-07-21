@@ -1,11 +1,13 @@
-﻿using pf_analyzer.Common;
-using pf_analyzer.DataModel;
-using pf_analyzer.Exceptions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
+using pf_analyzer.Common;
+using pf_analyzer.DataModel;
+using pf_analyzer.Exceptions;
 
 namespace pf_analyzer.Extensions
 {
@@ -453,5 +455,41 @@ namespace pf_analyzer.Extensions
             // calculate actual land value = total actual land value / total land area
             model.ActualLandValue = model.TotalActualLandValue / model.TotalLandArea;
         }
+
+        /// <summary>
+        /// Convert a <see cref="DataModel.PropertyDataModel"/> object to an
+        /// XML-formatted string.
+        /// </summary>
+        /// <param name="model">
+        /// The object to convert.
+        /// </param>
+        /// <returns>
+        /// The resulting XML-formatted string.
+        /// </returns>
+        public static string ToXML(this PropertyDataModel model)
+        {
+            var stringwriter = new StringWriter();
+            var serializer = new XmlSerializer(model.GetType());
+            serializer.Serialize(stringwriter, model);
+            return stringwriter.ToString();
+        }
+
+        /// <summary>
+        /// Convert an XML-formatted string to a
+        /// <see cref="DataModel.PropertyDataModel"/> object.
+        /// </summary>
+        /// <param name="model">
+        /// The object model in which the resulting data should be placed.
+        /// </param>
+        /// <param name="xml">
+        /// The XML-formatted string to convert.
+        /// </param>
+        public static PropertyDataModel FromXML(this PropertyDataModel model, string xml)
+        {
+            var stringReader = new StringReader(xml);
+            var serializer = new XmlSerializer(typeof(PropertyDataModel));
+            return serializer.Deserialize(stringReader) as PropertyDataModel;
+        }
+
     }
 }

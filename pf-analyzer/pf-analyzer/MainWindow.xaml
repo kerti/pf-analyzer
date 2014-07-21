@@ -3,11 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-        Title="Studi Kelayakan Properti" Height="600" Width="800" ResizeMode="CanMinimize"
-        WindowStartupLocation="CenterScreen" BorderBrush="Gray" BorderThickness="1"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        SnapsToDevicePixels="True"
+        AllowDrop="True"
+        DragEnter="Window_DragEnter"
+        DragOver="Window_DragOver"
+        DragLeave="Window_DragLeave"
+        Drop="Window_Drop"
+        Title="Studi Kelayakan Properti"
+        Height="600"
+        Width="800"
+        ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen"
+        BorderBrush="Gray"
+        BorderThickness="1"
         Icon="Resources\pfa.ico">
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
+            <Button x:Name="btnLoad" Content="buka" Command="Open" />
+            <Button x:Name="btnSave" Content="simpan" Command="Save" />
             <Button x:Name="btnAbout" Content="tentang program ini" Click="ShowAboutPage" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.WindowCommands>
@@ -25,7 +41,20 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" CanExecute="CanOpenFile" Executed="OpenFile" />
+        <CommandBinding Command="Save" CanExecute="CanSaveFile" Executed="SaveFile" />
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="Open"/>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="Save" />
+    </Window.InputBindings>
+    <Window.Background>
+        <LinearGradientBrush MappingMode="Absolute" StartPoint="0,0" EndPoint="0,150">
+            <GradientStop Color="#FFDEDEDE" />
+            <GradientStop Color="White" Offset="1" />
+        </LinearGradientBrush>
+    </Window.Background>
     <Controls:TransitioningContentControl x:Name="transitioning" Grid.Row="2" Grid.Column="0" Width="792" Height="569" Transition="Down" Grid.RowSpan="2">
         <Controls:MetroAnimatedTabControl x:Name="matcPrimaryTabControl" BorderThickness="0">
             <TabControl.Resources>
@@ -82,7 +111,7 @@
                             <Label Content="/m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5" Grid.Column="1" >
-                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="180"
+                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Path=Lots, Mode=TwoWay, diag:PresentationTraceSources.TraceLevel=High}" AutoGenerateColumns="False" Height="180"
                                       CellEditEnding="HandleSetRemainingLandAreaLabel" >
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
@@ -239,7 +268,7 @@
                         <Label Grid.Row="2" Grid.Column="4" Content="Fee (%)" />
 
                         <TextBox Name="txtTotalCosts" Grid.Row="0" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding TotalCosts, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding TotalCostsOfDevelopment, StringFormat={}{0:f}}" TextAlignment="Right"  />
                         <TextBox Name="txtEffectiveLandCost" Grid.Row="1" Grid.Column="1" Height="20" Margin="7,0,7,0"
                                  Text="{Binding EffectiveLandCost, StringFormat={}{0:f}}" TextAlignment="Right"  />
                         <TextBox Name="txtLandResaleProfitPercent" Grid.Row="2" Grid.Column="1" Height="20" Margin="7,0,7,0"
@@ -640,5 +669,4 @@
             </TabItem>
         </Controls:MetroAnimatedTabControl>
     </Controls:TransitioningContentControl>
-
 </Controls:MetroWindow>

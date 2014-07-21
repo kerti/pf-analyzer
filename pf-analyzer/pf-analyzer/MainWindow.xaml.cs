@@ -1,13 +1,9 @@
-﻿using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using pf_analyzer.Common;
-using pf_analyzer.DataModel;
-using pf_analyzer.Exceptions;
-using pf_analyzer.Extensions;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -15,6 +11,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using Microsoft.Win32;
+using pf_analyzer.Common;
+using pf_analyzer.DataModel;
+using pf_analyzer.Exceptions;
+using pf_analyzer.Extensions;
 
 namespace pf_analyzer
 {
@@ -27,6 +30,8 @@ namespace pf_analyzer
         #region Private Properties
 
         private PropertyDataModel data;
+        private string filename = string.Empty;
+        private bool canOpenFile = true;
 
         #endregion
 
@@ -75,7 +80,166 @@ namespace pf_analyzer
             about.ShowDialog();
         }
 
-        #endregion
+        #endregion Common Control Events
+
+        #region Window Drag and Drop Events
+
+        private void Window_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("Filename"))
+            {
+                MemoryStream ms = e.Data.GetData("Filename") as MemoryStream;
+                StreamReader sr = new StreamReader(ms);
+                string info = sr.ReadToEnd();
+                if (Constants.FILE_EXTENSION.Equals(info.Substring(info.Length - 5, 4)))
+                {
+                    canOpenFile = true;
+                }
+                else
+                {
+                    canOpenFile = false;
+                }
+            }
+            else
+            {
+                canOpenFile = false;
+            }
+            e.Handled = true;
+        }
+
+        private void Window_DragOver(object sender, DragEventArgs e)
+        {
+            if (canOpenFile)
+            {
+                e.Effects = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = true;
+        }
+
+        private void Window_DragLeave(object sender, DragEventArgs e)
+        {
+            canOpenFile = true;
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("Filename"))
+            {
+                MemoryStream ms = e.Data.GetData("Filename") as MemoryStream;
+                StreamReader sr = new StreamReader(ms);
+                string info = sr.ReadToEnd();
+                ReadXmlDocument(info.Substring(0, info.Length - 1));
+            }
+        }
+
+        #endregion Window Drag and Drop Events
+
+        #region Commands
+
+        #region Open File Command
+
+        private void CanOpenFile(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = canOpenFile;
+            e.Handled = true;
+        }
+
+        private void OpenFile(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFileDialog ofdOpenFile = new OpenFileDialog();
+
+            ofdOpenFile.Filter = Constants.FILE_TYPE
+                + " (*" + Constants.FILE_EXTENSION + ")|*"
+                + Constants.FILE_EXTENSION + "|All files (*.*)|*.*";
+            ofdOpenFile.FilterIndex = 1;
+            ofdOpenFile.RestoreDirectory = true;
+
+            if (ofdOpenFile.ShowDialog().Value)
+            {
+                ReadXmlDocument(ofdOpenFile.FileName);
+            }
+        }
+
+        #endregion Open File Command
+
+        #region Save File Command
+
+        private void CanSaveFile(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+            e.Handled = true;
+        }
+
+        private void SaveFile(object sender, ExecutedRoutedEventArgs e)
+        {
+            bool isSaveAs = true;
+            if (!string.IsNullOrEmpty(filename))
+            {
+                isSaveAs = false;
+            }
+            else
+            {
+                SaveFileDialog sfdSaveFile = new SaveFileDialog();
+
+                sfdSaveFile.Filter = Constants.FILE_TYPE
+                    + " (*" + Constants.FILE_EXTENSION + ")|*"
+                    + Constants.FILE_EXTENSION + "|All files (*.*)|*.*";
+                sfdSaveFile.FilterIndex = 1;
+                sfdSaveFile.RestoreDirectory = true;
+
+                if (sfdSaveFile.ShowDialog().Value)
+                {
+                    filename = sfdSaveFile.FileName;
+                }
+            }
+
+            try
+            {
+                if (!string.IsNullOrEmpty(filename))
+                {
+                    using (StreamWriter sw = new StreamWriter(filename))
+                    {
+                        string xmlString = data.ToXML();
+                        sw.Write(xmlString);
+                    }
+
+                    if (isSaveAs)
+                    {
+                        ShowMessageNoWait(
+                            "Berhasil Menyimpan File",
+                            "Berhasil menyimpan file sebagai " + filename + ".");
+                    }
+                }
+                else
+                {
+                    ShowMessageNoWait(
+                        "Gagal Menyimpan File",
+                        "Gagal menyimpan file karena nama file tidak ditentukan.");
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                ShowMessageNoWait(
+                    "Gagal Menyimpan File",
+                    "Gagal menyimpan file karena tidak dapat mengenali format file tersebut.");
+            }
+            catch (Exception ex)
+            {
+                ShowMessageNoWait(
+                    "Gagal Menyimpan File",
+                    "Gagal menyimpan file karena kesalahan berikut: " + ex.Message);
+            }
+        }
+
+        #endregion Save File Command
+
+        #endregion Commands
 
         #region Page One
 
@@ -159,7 +323,7 @@ namespace pf_analyzer
                 clearBeforeAdd = MessageDialogResult.Affirmative == answer;
             }
 
-            data.AddDefaultCosts(clearBeforeAdd, Costs_CollectionChanged, Cost_PropertyChanged); 
+            data.AddDefaultCosts(clearBeforeAdd, Costs_CollectionChanged, Cost_PropertyChanged);
         }
 
         private async void DeleteCost(object sender, RoutedEventArgs e)
@@ -395,6 +559,140 @@ namespace pf_analyzer
             dgResultLotNettPrice.Items.Refresh();
             dgResultLotProfit.Items.Refresh();
             dgResultLotSalePrice.Items.Refresh();
+        }
+
+        private async void ShowMessageNoWait(string title, string message,
+            MessageDialogStyle style = MessageDialogStyle.Affirmative,
+            MetroDialogSettings settings = null)
+        {
+            if (null == settings)
+            {
+                settings = Constants.MDS_OKAY;
+            }
+            await this.ShowMessageAsync(title, message, style, settings);
+        }
+
+        private void ReadXmlDocument(string attemptedFilename)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(attemptedFilename))
+                {
+                    using (StreamReader sr = File.OpenText(attemptedFilename))
+                    {
+                        string s = sr.ReadToEnd();
+                        CopyLoadedData(data.FromXML(s));
+                        LoadXmlDataToScreen();
+                        filename = attemptedFilename;
+                    }
+                }
+                else
+                {
+                    ShowMessageNoWait(
+                        "Gagal Membuka File",
+                        "Gagal membuka file karena nama file tidak ditentukan..");
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                ShowMessageNoWait(
+                    "Gagal Membuka File",
+                    "Gagal membuka file karena tidak dapat mengenali format file tersebut.");
+            }
+            catch (Exception ex)
+            {
+                ShowMessageNoWait(
+                    "Gagal Membuka File",
+                    "Gagal membuka file karena kesalahan berikut: " + ex.Message);
+            }
+        }
+
+        private void CopyLoadedData(PropertyDataModel converted)
+        {
+
+            #region Page One
+
+            data.Location = converted.Location;
+            data.TotalLandArea = converted.TotalLandArea;
+            data.TotalRoadArea = converted.TotalRoadArea;
+            data.TotalPublicFacilityArea = converted.TotalPublicFacilityArea;
+            data.BaseLandPrice = converted.BaseLandPrice;
+
+            if (null != converted.Lots && converted.Lots.Count > 0)
+            {
+                foreach (Lot lot in converted.Lots)
+                {
+                    data.Lots.Add(lot);
+                }
+            }
+
+            #endregion
+
+            #region Page Two
+
+            if (null != converted.Costs && converted.Costs.Count > 0)
+            {
+                foreach (Cost cost in converted.Costs)
+                {
+                    cost.PropertyChanged += Cost_PropertyChanged;
+                    data.Costs.Add(cost);
+                }
+            }
+
+            data.TotalCostsOfDevelopment = converted.TotalCostsOfDevelopment;
+            data.EffectiveLandCost = converted.EffectiveLandCost;
+            data.LandResaleProfitPercent = converted.LandResaleProfitPercent;
+            data.LandResalePrice = converted.LandResalePrice;
+            data.BuildingPrice = converted.BuildingPrice;
+            data.BuildingPermitCostPerLot = converted.BuildingPermitCostPerLot;
+            data.PromoCostPerLot = converted.PromoCostPerLot;
+            data.ValueAddedTaxPercent = converted.ValueAddedTaxPercent;
+            data.FeePercent = converted.FeePercent;
+            data.ProfitPoints = converted.ProfitPoints;
+            data.TotalBaseSalePrice = converted.TotalBaseSalePrice;
+            data.FinalProfitPercentage = converted.FinalProfitPercentage;
+            data.FinalProfitNominal = converted.FinalProfitNominal;
+            data.TotalActualLandValue = converted.TotalActualLandValue;
+            data.ActualLandValue = converted.ActualLandValue;
+
+            #endregion
+
+        }
+
+        private void LoadXmlDataToScreen()
+        {
+            if (null != data)
+            {
+
+                #region Page One
+
+                if (!string.IsNullOrEmpty(data.Location))
+                {
+                    txtLocation.Text = data.Location;
+                }
+
+                txtLandArea.Text = data.TotalLandArea.ToString("#,##0.00");
+                txtRoadArea.Text = data.TotalRoadArea.ToString("#,##0.00");
+                txtPublicFacilityArea.Text = data.TotalPublicFacilityArea.ToString("#,##0.00");
+                txtBaseLandPrice.Text = data.BaseLandPrice.ToString("#,##0.00");
+
+                #endregion Page One
+
+                #region Page Two
+
+                txtTotalCosts.Text = data.TotalCostsOfDevelopment.ToString("#,##0.00");
+                txtEffectiveLandCost.Text = data.EffectiveLandCost.ToString("#,##0.00");
+                txtLandResaleProfitPercent.Text = data.LandResaleProfitPercent.ToString("#,##0.00");
+                txtLandResalePrice.Text = data.LandResalePrice.ToString("#,##0.00");
+                txtBuildingPrice.Text = data.BuildingPrice.ToString("#,##0.00");
+                txtBuildingPermitCostPerLot.Text = data.BuildingPermitCostPerLot.ToString("#,##0.00");
+                txtPromoCostPerLot.Text = data.PromoCostPerLot.ToString("#,##0.00");
+                txtValueAddedTaxPercent.Text = data.ValueAddedTaxPercent.ToString("#,##0.00");
+                txtFeePercent.Text = data.FeePercent.ToString("#,##0.00");
+
+                #endregion Page Two
+
+            }
         }
 
     }
