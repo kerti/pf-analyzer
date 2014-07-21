@@ -92,22 +92,26 @@
                         <TextBox Grid.Row="0" Grid.Column="1" Name="txtLocation" Height="20" Text="{Binding Location}" />
                         <StackPanel Grid.Row="1" Grid.Column="1" Height="40" Orientation="Horizontal">
                             <TextBox Name="txtLandArea" Width="90" Height="20" Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                                     PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Grid.Column="1" Height="40" Orientation="Horizontal">
                             <TextBox Name="txtRoadArea" Width="90" Height="20" Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                                     PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3" Grid.Column="1" Height="40" Orientation="Horizontal">
                             <TextBox Name="txtPublicFacilityArea" Width="90" Height="20" Text="{Binding TotalPublicFacilityArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                                     PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="4" Grid.Column="1" Height="40" Orientation="Horizontal">
                             <TextBox Name="txtBaseLandPrice" Width="90" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                                     PreviewTextInput="TextboxPreviewTextInputNumericOnly"/>
                             <Label Content="/m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5" Grid.Column="1" >
@@ -136,7 +140,8 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <TextBox Text="{Binding LandArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
+                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right"
+                                                         PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
@@ -150,7 +155,8 @@
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
                                                 <TextBox Text="{Binding BuildingArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
+                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right"
+                                                         PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
@@ -199,7 +205,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Quantity}" />
+                                        <TextBox Text="{Binding Quantity}" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -223,7 +229,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding UnitValue, StringFormat={}{0:f}}" TextAlignment="Right" />
+                                        <TextBox Text="{Binding UnitValue, StringFormat={}{0:f}}" TextAlignment="Right" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -235,7 +241,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding TotalValue, StringFormat={}{0:f}}" TextAlignment="Right" />
+                                        <TextBox Text="{Binding TotalValue, StringFormat={}{0:f}}" TextAlignment="Right" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -268,25 +274,34 @@
                         <Label Grid.Row="2" Grid.Column="4" Content="Fee (%)" />
 
                         <TextBox Name="txtTotalCosts" Grid.Row="0" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding TotalCostsOfDevelopment, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding TotalCostsOfDevelopment, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 IsReadOnly="True" Background="LightGray" />
                         <TextBox Name="txtEffectiveLandCost" Grid.Row="1" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding EffectiveLandCost, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding EffectiveLandCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 IsReadOnly="True" Background="LightGray" />
                         <TextBox Name="txtLandResaleProfitPercent" Grid.Row="2" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding LandResaleProfitPercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding LandResaleProfitPercent, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
 
                         <TextBox Name="txtLandResalePrice" Grid.Row="0" Grid.Column="3" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding LandResalePrice, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding LandResalePrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 IsReadOnly="True" Background="LightGray" />
                         <TextBox Name="txtBuildingPrice" Grid.Row="1" Grid.Column="3" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding BuildingPrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
+                                 Text="{Binding BuildingPrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                         <TextBox Name="txtBuildingPermitCostPerLot" Grid.Row="2" Grid.Column="3" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding BuildingPermitCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
+                                 Text="{Binding BuildingPermitCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
 
                         <TextBox Name="txtPromoCostPerLot" Grid.Row="0" Grid.Column="5" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding PromoCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"  />
+                                 Text="{Binding PromoCostPerLot, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                         <TextBox Name="txtValueAddedTaxPercent" Grid.Row="1" Grid.Column="5" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding ValueAddedTaxPercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding ValueAddedTaxPercent, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                         <TextBox Name="txtFeePercent" Grid.Row="2" Grid.Column="5" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding FeePercent, StringFormat={}{0:f}}" TextAlignment="Right"  />
+                                 Text="{Binding FeePercent, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                     </Grid>
                     <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="10,0,10,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -339,7 +354,7 @@
                             </Grid>
                             <Label Margin="10" Content="Data Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="140"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -366,7 +381,7 @@
                             </DataGrid>
                             <Label Margin="10" Content="Pekerjaan dan Biaya" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Pekerjaan/Biaya" Width="388">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -438,7 +453,7 @@
                             </Grid>
                             <Label Margin="10" Content="Harga Netto per Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultLotNettPrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="238">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -486,7 +501,7 @@
                             </DataGrid>
                             <Label Margin="10" Content="Harga Pokok Penjualan per Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultLotBaseSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="398">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -520,7 +535,7 @@
                             </DataGrid>
                             <Label Margin="10" Content="Harga Jual per Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultLotSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="158">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -575,7 +590,7 @@
                             </DataGrid>
                             <Label Margin="10" Content="Keuntungan per Kavling" FontSize="16" FontWeight="Bold" />
                             <DataGrid x:Name="dgResultLotProfit" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0">
+                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="158">
                                         <DataGridTemplateColumn.CellTemplate>

@@ -80,6 +80,25 @@ namespace pf_analyzer
             about.ShowDialog();
         }
 
+        private void TextboxPreviewTextInputNumericOnly(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !Char.IsNumber(Convert.ToChar(e.Text));
+            base.OnPreviewTextInput(e);
+        }
+
+        private void DeferScrollToParent(object sender, MouseWheelEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+                eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+                eventArg.Source = sender;
+                var parent = ((Control)sender).Parent as UIElement;
+                parent.RaiseEvent(eventArg);
+            }
+        }
+
         #endregion Common Control Events
 
         #region Window Drag and Drop Events
