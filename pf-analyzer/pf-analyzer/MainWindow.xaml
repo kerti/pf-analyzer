@@ -124,7 +124,7 @@
                         <StackPanel Grid.Row="5" Grid.Column="1" >
                             <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Path=Lots}" AutoGenerateColumns="False"
                                       Height="180" CellEditEnding="HandleSetRemainingLandAreaLabel"
-                                      DataGridCell.GotFocus="DataGrid_GotFocus">
+                                      DataGridCell.GotFocus="DataGridMousePreviewSingleClickEdit">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -206,7 +206,7 @@
                     <Label Margin="10" Content="Biaya-biaya" FontSize="24" />
                     <Label Margin="10" Content="Silakan masukkan biaya-biaya yang dikenakan terhadap properti." />
                     <DataGrid x:Name="dgCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="285"
-                              Margin="10,0,10,0" DataGridCell.GotFocus="DataGrid_GotFocus">
+                              Margin="10,0,10,0" DataGridCell.GotFocus="DataGridMousePreviewSingleClickEdit">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Nama Pekerjaan" Width="300">
                                 <DataGridTemplateColumn.CellTemplate>

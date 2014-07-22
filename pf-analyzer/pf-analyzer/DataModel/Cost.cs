@@ -38,6 +38,7 @@ namespace pf_analyzer.DataModel
             set
             {
                 quantity = value;
+                NotifyPropertyChanged("Quantity");
                 totalValue = unitValue * value;
                 NotifyPropertyChanged("TotalValue");
             }
@@ -69,6 +70,7 @@ namespace pf_analyzer.DataModel
             set
             {
                 unitValue = value;
+                NotifyPropertyChanged("UnitValue");
                 totalValue = value * quantity;
                 NotifyPropertyChanged("TotalValue");
             }
@@ -86,6 +88,7 @@ namespace pf_analyzer.DataModel
             set
             {
                 totalValue = value;
+                NotifyPropertyChanged("TotalValue");
                 if (quantity > 0)
                 {
                     unitValue = value / quantity;

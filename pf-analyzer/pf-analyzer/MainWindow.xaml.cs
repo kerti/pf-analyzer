@@ -99,7 +99,7 @@ namespace pf_analyzer
             }
         }
 
-        private void DataGrid_GotFocus(object sender, RoutedEventArgs e)
+        private void DataGridMousePreviewSingleClickEdit(object sender, RoutedEventArgs e)
         {
             // Lookup for the source to be DataGridCell
             if (e.OriginalSource.GetType() == typeof(DataGridCell))
@@ -357,6 +357,8 @@ namespace pf_analyzer
         {
             if (await ValidateFirstPage())
             {
+                UpdateMandatoryCosts();
+                UpdateSecondPageOnDataChange();
                 matcPrimaryTabControl.SelectedIndex = 1;
             }
         }
@@ -557,6 +559,33 @@ namespace pf_analyzer
             txtTotalCosts.Text = data.TotalCostsOfDevelopment.ToString("#,###.00");
             txtEffectiveLandCost.Text = data.EffectiveLandCost.ToString("#,###.00");
             txtLandResalePrice.Text = data.LandResalePrice.ToString("#,###.00");
+        }
+
+        private void UpdateMandatoryCosts()
+        {
+            if (null != data.Costs && data.Costs.Count > 0)
+            {
+                foreach (Cost cost in data.Costs)
+                {
+                    if (Constants.COST_LAND_PURCHASE.Equals(cost.Name))
+                    {
+                        cost.Quantity = data.TotalLandArea;
+                        cost.UnitValue = data.BaseLandPrice;
+                    }
+
+                    if (Constants.COST_PUBLIC_FACILITY.Equals(cost.Name))
+                    {
+                        cost.Quantity = data.TotalPublicFacilityArea;
+                        cost.UnitValue = data.BaseLandPrice;
+                    }
+
+                    if (Constants.COST_ROAD_PURCHASE.Equals(cost.Name))
+                    {
+                        cost.Quantity = data.TotalRoadArea;
+                        cost.UnitValue = data.BaseLandPrice;
+                    }
+                }
+            }
         }
 
         private void SetupResultFields()
