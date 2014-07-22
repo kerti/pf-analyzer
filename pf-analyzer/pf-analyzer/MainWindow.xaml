@@ -55,7 +55,8 @@
             <GradientStop Color="White" Offset="1" />
         </LinearGradientBrush>
     </Window.Background>
-    <Controls:TransitioningContentControl x:Name="transitioning" Grid.Row="2" Grid.Column="0" Width="792" Height="569" Transition="Down" Grid.RowSpan="2">
+    <Controls:TransitioningContentControl x:Name="transitioning" Grid.Row="2" Grid.Column="0" Width="792" Height="569"
+                                          Transition="Down" Grid.RowSpan="2">
         <Controls:MetroAnimatedTabControl x:Name="matcPrimaryTabControl" BorderThickness="0">
             <TabControl.Resources>
                 <Style TargetType="TabItem">
@@ -91,56 +92,70 @@
                         <Label Grid.Row="5" Grid.Column="0" Margin="5,0,5,214" Height="26" Content="Kavling" />
                         <TextBox Grid.Row="0" Grid.Column="1" Name="txtLocation" Height="20" Text="{Binding Location}" />
                         <StackPanel Grid.Row="1" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtLandArea" Width="90" Height="20" Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                            <TextBox Name="txtLandArea" Width="90" Height="20"
+                                     Text="{Binding TotalLandArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
                                      PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="2" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtRoadArea" Width="90" Height="20" Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                            <TextBox Name="txtRoadArea" Width="90" Height="20"
+                                     Text="{Binding TotalRoadArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
+                                     GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
                                      PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="3" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtPublicFacilityArea" Width="90" Height="20" Text="{Binding TotalPublicFacilityArea, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                            <TextBox Name="txtPublicFacilityArea" Width="90" Height="20"
+                                     Text="{Binding TotalPublicFacilityArea, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                     GotMouseCapture="TextboxGotMouseCapture"
                                      PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                             <Label Content="m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="4" Grid.Column="1" Height="40" Orientation="Horizontal">
-                            <TextBox Name="txtBaseLandPrice" Width="90" Height="20" Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
-                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture"
+                            <TextBox Name="txtBaseLandPrice" Width="90" Height="20"
+                                     Text="{Binding BaseLandPrice, StringFormat='{}{0:#,##0.00}'}"
+                                     TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                     GotMouseCapture="TextboxGotMouseCapture"
                                      PreviewTextInput="TextboxPreviewTextInputNumericOnly"/>
                             <Label Content="/m²" Margin="5"/>
                         </StackPanel>
                         <StackPanel Grid.Row="5" Grid.Column="1" >
-                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Path=Lots, Mode=TwoWay, diag:PresentationTraceSources.TraceLevel=High}" AutoGenerateColumns="False" Height="180"
-                                      CellEditEnding="HandleSetRemainingLandAreaLabel" >
+                            <DataGrid x:Name="dgBasicLots" ItemsSource="{Binding Path=Lots}" AutoGenerateColumns="False"
+                                      Height="180" CellEditEnding="HandleSetRemainingLandAreaLabel"
+                                      DataGridCell.GotFocus="DataGrid_GotFocus">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                                <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                                           Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding Name}" GotKeyboardFocus="TextboxGotKeyboardFocus" GotMouseCapture="TextboxGotMouseCapture" />
+                                                <TextBox Text="{Binding Name}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Luas Tanah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}"
-                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
+                                                <TextBlock Text="{Binding Path=LandArea, UpdateSourceTrigger=PropertyChanged,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel"
+                                                           TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding LandArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right"
+                                                <TextBox Text="{Binding LandArea, StringFormat='{}{0:#,##0.00}'}"
+                                                         GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture"
+                                                         LostFocus="HandleSetRemainingLandAreaLabel"
+                                                         TextAlignment="Right"
                                                          PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
@@ -148,14 +163,19 @@
                                     <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}"
-                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right" />
+                                                <TextBlock Text="{Binding Path=BuildingArea, UpdateSourceTrigger=PropertyChanged,
+                                                           StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" LostFocus="HandleSetRemainingLandAreaLabel"
+                                                           TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                         <DataGridTemplateColumn.CellEditingTemplate>
                                             <DataTemplate>
-                                                <TextBox Text="{Binding BuildingArea, StringFormat='{}{0:#,##0.00}'}" GotKeyboardFocus="TextboxGotKeyboardFocus"
-                                                         GotMouseCapture="TextboxGotMouseCapture" LostFocus="HandleSetRemainingLandAreaLabel" TextAlignment="Right"
+                                                <TextBox Text="{Binding BuildingArea, StringFormat='{}{0:#,##0.00}'}"
+                                                         GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                         GotMouseCapture="TextboxGotMouseCapture"
+                                                         LostFocus="HandleSetRemainingLandAreaLabel"
+                                                         TextAlignment="Right"
                                                          PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellEditingTemplate>
@@ -174,8 +194,10 @@
                         </StackPanel>
                     </Grid>
                     <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="0,0,10,0">
-                        <Button  Name="btnStep1Next" Content="berikutnya &gt;&gt;" Style="{DynamicResource SquareButtonStyle}"
-                                 Margin="5,0,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right" Click="FirstPageNext"/>
+                        <Button  Name="btnStep1Next" Content="berikutnya &gt;&gt;"
+                                 Style="{DynamicResource SquareButtonStyle}"
+                                 Margin="5,0,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right"
+                                 Click="FirstPageNext"/>
                     </DockPanel>
                 </StackPanel>
             </TabItem>
@@ -183,29 +205,35 @@
                 <StackPanel>
                     <Label Margin="10" Content="Biaya-biaya" FontSize="24" />
                     <Label Margin="10" Content="Silakan masukkan biaya-biaya yang dikenakan terhadap properti." />
-                    <DataGrid x:Name="dgCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="285" Margin="10,0,10,0">
+                    <DataGrid x:Name="dgCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="285"
+                              Margin="10,0,10,0" DataGridCell.GotFocus="DataGrid_GotFocus">
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="Nama Pekerjaan" Width="300">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                        <TextBlock Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}"
+                                                   Margin="5" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Name}" />
+                                        <TextBox Text="{Binding Name}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                 GotMouseCapture="TextboxGotMouseCapture" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Volume" Width="120">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=Quantity, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+                                        <TextBlock Text="{Binding Path=Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                                   Margin="5" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Quantity}" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
+                                        <TextBox Text="{Binding Quantity}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                 GotMouseCapture="TextboxGotMouseCapture"
+                                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -217,31 +245,40 @@
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding Unit}" />
+                                        <TextBox Text="{Binding Unit}" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                 GotMouseCapture="TextboxGotMouseCapture" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Harga Satuan" Width="145">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=UnitValue, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                        <TextBlock Text="{Binding Path=UnitValue, UpdateSourceTrigger=PropertyChanged,
+                                                          StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding UnitValue, StringFormat={}{0:f}}" TextAlignment="Right" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
+                                        <TextBox Text="{Binding UnitValue, StringFormat='{}{0:#,##0.00}'}"
+                                                 TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                 GotMouseCapture="TextboxGotMouseCapture"
+                                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="Harga Total" Width="145">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Path=TotalValue, UpdateSourceTrigger=PropertyChanged, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                        <TextBlock Text="{Binding Path=TotalValue, UpdateSourceTrigger=PropertyChanged,
+                                                          StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                                 <DataGridTemplateColumn.CellEditingTemplate>
                                     <DataTemplate>
-                                        <TextBox Text="{Binding TotalValue, StringFormat={}{0:f}}" TextAlignment="Right" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
+                                        <TextBox Text="{Binding TotalValue, StringFormat='{}{0:#,##0.00}'}"
+                                                 TextAlignment="Right" GotKeyboardFocus="TextboxGotKeyboardFocus"
+                                                 GotMouseCapture="TextboxGotMouseCapture"
+                                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellEditingTemplate>
                             </DataGridTemplateColumn>
@@ -274,14 +311,14 @@
                         <Label Grid.Row="2" Grid.Column="4" Content="Fee (%)" />
 
                         <TextBox Name="txtTotalCosts" Grid.Row="0" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding TotalCostsOfDevelopment, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
-                                 IsReadOnly="True" Background="LightGray" />
+                                 Text="{Binding TotalCostsOfDevelopment, StringFormat='{}{0:#,##0.00}'}"
+                                 TextAlignment="Right" IsReadOnly="True" Background="LightGray" />
                         <TextBox Name="txtEffectiveLandCost" Grid.Row="1" Grid.Column="1" Height="20" Margin="7,0,7,0"
                                  Text="{Binding EffectiveLandCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
                                  IsReadOnly="True" Background="LightGray" />
                         <TextBox Name="txtLandResaleProfitPercent" Grid.Row="2" Grid.Column="1" Height="20" Margin="7,0,7,0"
-                                 Text="{Binding LandResaleProfitPercent, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
-                                 PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
+                                 Text="{Binding LandResaleProfitPercent, StringFormat='{}{0:#,##0.00}'}"
+                                 TextAlignment="Right" PreviewTextInput="TextboxPreviewTextInputNumericOnly" />
 
                         <TextBox Name="txtLandResalePrice" Grid.Row="0" Grid.Column="3" Height="20" Margin="7,0,7,0"
                                  Text="{Binding LandResalePrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right"
@@ -305,18 +342,22 @@
                     </Grid>
                     <DockPanel Grid.Row="4" Grid.Column="1" Height="25" Margin="10,0,10,0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <Button Name="btnSetDefaultJobs" Content="Tambahkan Biaya Umum" Style="{DynamicResource SquareButtonStyle}"
-                                    Margin="0,0,5,0" Padding="0" Height="25" Width="150" Click="AddDefaultCosts" />
+                            <Button Name="btnSetDefaultJobs" Content="Tambahkan Biaya Umum"
+                                    Style="{DynamicResource SquareButtonStyle}" Margin="0,0,5,0" Padding="0" Height="25"
+                                    Width="150" Click="AddDefaultCosts" />
                             <Button Name="btnDeleteJob" Content="Hapus Biaya" Style="{DynamicResource SquareButtonStyle}"
                                     Margin="5,0,5,0" Padding="0" Height="25" Width="150" Click="DeleteCost" />
-                            <Button Name="btnDeleteAllJobs" Content="Hapus Semua BIaya" Style="{DynamicResource SquareButtonStyle}"
-                                    Margin="5,0,5,0" Padding="0" Height="25" Width="150" Click="DeleteAllCosts" />
+                            <Button Name="btnDeleteAllJobs" Content="Hapus Semua BIaya"
+                                    Style="{DynamicResource SquareButtonStyle}" Margin="5,0,5,0" Padding="0" Height="25"
+                                    Width="150" Click="DeleteAllCosts" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Name="btnStep2Prev" Content="&lt;&lt; sebelumya" Style="{DynamicResource SquareButtonStyle}"
-                                    Margin="5,0,5,0" Padding="0" Height="25" Width="100" Click="SecondPagePrevious"/>
-                            <Button Name="btnStep2Next" Content="berikutnya &gt;&gt;" Style="{DynamicResource SquareButtonStyle}"
-                                    Margin="5,0,0,0" Padding="0" Height="25" Width="100" Click="SecondPageNext"/>
+                            <Button Name="btnStep2Prev" Content="&lt;&lt; sebelumya"
+                                    Style="{DynamicResource SquareButtonStyle}" Margin="5,0,5,0" Padding="0" Height="25"
+                                    Width="100" Click="SecondPagePrevious"/>
+                            <Button Name="btnStep2Next" Content="berikutnya &gt;&gt;"
+                                    Style="{DynamicResource SquareButtonStyle}" Margin="5,0,0,0" Padding="0" Height="25"
+                                    Width="100" Click="SecondPageNext"/>
                         </StackPanel>
                     </DockPanel>
                 </StackPanel>
@@ -346,15 +387,20 @@
                                 <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Luas Fasilitas Umum" />
                                 <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" Content="Harga Tanah" />
 
-                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation" Content="" />
-                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea" Content="" ContentStringFormat="{}{0:N2} m²" />
-                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea" Content="" ContentStringFormat="{}{0:N2} m²" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultPublicFacilityArea" Content="" ContentStringFormat="{}{0:N2} m²" />
-                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultBaseLandPrice" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLocation"
+                                       Content="" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandArea"
+                                       Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultRoadArea"
+                                       Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultPublicFacilityArea"
+                                       Content="" ContentStringFormat="{}{0:N2} m²" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultBaseLandPrice"
+                                       Content="" ContentStringFormat="Rp {0:N2}" />
                             </Grid>
                             <Label Margin="10" Content="Data Kavling" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="140"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <DataGrid x:Name="dgResultBasicLots" ItemsSource="{Binding Lots}" AutoGenerateColumns="False"
+                                      Height="140" Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Kavling" Width="350">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -366,22 +412,24 @@
                                     <DataGridTemplateColumn Header="Luas Tanah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Luas Bangunan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" Margin="5" TextAlignment="Right" />
+                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}"
+                                                           Margin="5" TextAlignment="Right" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <Label Margin="10" Content="Pekerjaan dan Biaya" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <DataGrid x:Name="dgResultCosts" ItemsSource="{Binding Costs}" AutoGenerateColumns="False"
+                                      Height="280" Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Nama Pekerjaan/Biaya" Width="388">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -407,20 +455,23 @@
                                     <DataGridTemplateColumn Header="Satuan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=UnitValue, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=UnitValue, StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Jumlah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=TotalValue, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=TotalValue, StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Label Margin="10" Content="Total Biaya dan Harga Pokok Penjualan" FontSize="16" FontWeight="Bold" />
+                            <Label Margin="10" Content="Total Biaya dan Harga Pokok Penjualan" FontSize="16"
+                                   FontWeight="Bold" />
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
@@ -434,26 +485,37 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" Content="Jumlah Pekerjaan dan Biaya" />
-                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" Content="Harga Tanah Efektif" />
-                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" Content="Profit Margin Penjualan Tanah" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" Content="Harga Tanah Digunakan" />
-                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" Content="Harga Bangunan Digunakan" />
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0"
+                                       Content="Jumlah Pekerjaan dan Biaya" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0"
+                                       Content="Harga Tanah Efektif" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0"
+                                       Content="Profit Margin Penjualan Tanah" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0"
+                                       Content="Harga Tanah Digunakan" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0"
+                                       Content="Harga Bangunan Digunakan" />
 
-                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultTotalCostsOfDevelopment"
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1"
+                                       x:Name="lblResultTotalCostsOfDevelopment"
                                    Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultEffectiveLandCost"
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"
+                                       x:Name="lblResultEffectiveLandCost"
                                    Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultLandResaleProfitPercent"
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1"
+                                       x:Name="lblResultLandResaleProfitPercent"
                                    Content="" ContentStringFormat="{}{0:N2} %" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultLandResalePrice"
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1"
+                                       x:Name="lblResultLandResalePrice"
                                    Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultBuildingPrice"
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1"
+                                       x:Name="lblResultBuildingPrice"
                                    Content="" ContentStringFormat="Rp {0:N2}" />
                             </Grid>
                             <Label Margin="10" Content="Harga Netto per Kavling" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultLotNettPrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <DataGrid x:Name="dgResultLotNettPrice" ItemsSource="{Binding Lots}"
+                                      AutoGenerateColumns="False" Height="280" Margin="10,0,0,0"
+                                      PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="238">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -465,43 +527,55 @@
                                     <DataGridTemplateColumn Header="Bangunan" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=TotalBuildingCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=TotalBuildingCost,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Tanah" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=TotalLandCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=TotalLandCost,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="IMB" Width="80">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingPermitCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BuildingPermitCost,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Promo" Width="80">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PromoCost, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PromoCost,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Jumlah Netto" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=TotalNettPrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=TotalNettPrice,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Label Margin="10" Content="Harga Pokok Penjualan per Kavling" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultLotBaseSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <Label Margin="10" Content="Harga Pokok Penjualan per Kavling" FontSize="16"
+                                   FontWeight="Bold" />
+                            <DataGrid x:Name="dgResultLotBaseSalePrice" ItemsSource="{Binding Lots}"
+                                      AutoGenerateColumns="False" Height="280" Margin="10,0,0,0"
+                                      PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="398">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -513,29 +587,36 @@
                                     <DataGridTemplateColumn Header="PPH" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=ValueAddedTax, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=ValueAddedTax,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="Fee" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=Fee, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=Fee,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="HPP" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BaseSalePrice, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BaseSalePrice,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <Label Margin="10" Content="Harga Jual per Kavling" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultLotSalePrice" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <DataGrid x:Name="dgResultLotSalePrice" ItemsSource="{Binding Lots}"
+                                      AutoGenerateColumns="False" Height="280" Margin="10,0,0,0"
+                                      PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="158">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -547,50 +628,62 @@
                                     <DataGridTemplateColumn Header="LT" Width="60">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=LandArea,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="LB" Width="60">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BuildingArea,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P1" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[0].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[0].FinalPriceNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P2" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[1].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[1].FinalPriceNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P3" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[2].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[2].FinalPriceNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P4" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[3].FinalPriceNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[3].FinalPriceNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                             <Label Margin="10" Content="Keuntungan per Kavling" FontSize="16" FontWeight="Bold" />
-                            <DataGrid x:Name="dgResultLotProfit" ItemsSource="{Binding Lots}" AutoGenerateColumns="False" Height="280"
-                                  Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
+                            <DataGrid x:Name="dgResultLotProfit" ItemsSource="{Binding Lots}" AutoGenerateColumns="False"
+                                      Height="280" Margin="10,0,0,0" PreviewMouseWheel="DeferScrollToParent">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Kavling" Width="158">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -602,48 +695,61 @@
                                     <DataGridTemplateColumn Header="LT" Width="60">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=LandArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=LandArea,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="LB" Width="60">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=BuildingArea, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=BuildingArea,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P1" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[0].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[0].ProfitNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P2" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[1].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[1].ProfitNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P3" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[2].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[2].ProfitNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                     <DataGridTemplateColumn Header="P4" Width="120">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Path=PricePoints[3].ProfitNominal, StringFormat='{}{0:#,##0.00}'}" TextAlignment="Right" Margin="5" />
+                                                <TextBlock Text="{Binding Path=PricePoints[3].ProfitNominal,
+                                                                  StringFormat='{}{0:#,##0.00}'}"
+                                                           TextAlignment="Right" Margin="5" />
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <Label Margin="10" Content="Pengembalian (Perhitungan Harga Tanah Aktual)" FontSize="16" FontWeight="Bold" />
+                            <Label Margin="10" Content="Pengembalian (Perhitungan Harga Tanah Aktual)" FontSize="16"
+                                   FontWeight="Bold" />
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="25" />
@@ -657,28 +763,34 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0" x:Name="lblResultLandPriceActual10" Content="Profit 10%" />
-                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0" x:Name="lblResultLandPriceActualP1" Content="P1" />
-                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0" x:Name="lblResultLandPriceActualP2" Content="P2" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0" x:Name="lblResultLandPriceActualP3" Content="P3" />
-                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0" x:Name="lblResultLandPriceActualP4" Content="P4" />
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="0"
+                                       x:Name="lblResultLandPriceActual10" Content="Profit 10%" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="0"
+                                       x:Name="lblResultLandPriceActualP1" Content="P1" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="0"
+                                       x:Name="lblResultLandPriceActualP2" Content="P2" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="0"
+                                       x:Name="lblResultLandPriceActualP3" Content="P3" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="0"
+                                       x:Name="lblResultLandPriceActualP4" Content="P4" />
 
-                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1" x:Name="lblResultLandPriceNominal10"
-                                   Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1" x:Name="lblResultLandPriceNominalP1"
-                                   Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1" x:Name="lblResultLandPriceNominalP2"
-                                   Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1" x:Name="lblResultLandPriceNominalP3"
-                                   Content="" ContentStringFormat="Rp {0:N2}" />
-                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1" x:Name="lblResultLandPriceNominalP4"
-                                   Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="0" Grid.Column="1"
+                                       x:Name="lblResultLandPriceNominal10" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"
+                                       x:Name="lblResultLandPriceNominalP1" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="2" Grid.Column="1"
+                                       x:Name="lblResultLandPriceNominalP2" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="3" Grid.Column="1"
+                                       x:Name="lblResultLandPriceNominalP3" Content="" ContentStringFormat="Rp {0:N2}" />
+                                <Label Margin="10,0,0,0" Grid.Row="4" Grid.Column="1"
+                                       x:Name="lblResultLandPriceNominalP4" Content="" ContentStringFormat="Rp {0:N2}" />
                             </Grid>
                         </StackPanel>
                     </ScrollViewer>
                     <DockPanel Grid.Row="4" Grid.Column="1" Height="35" Margin="0,0,10,0">
-                        <Button  Name="btnStep3Prev" Content="&lt;&lt; sebelumnya" Style="{DynamicResource SquareButtonStyle}"
-                                 Margin="5,10,0,0" Padding="0" Height="25" Width="100" HorizontalAlignment="Right" Click="ThirdPagePrevious"/>
+                        <Button  Name="btnStep3Prev" Content="&lt;&lt; sebelumnya"
+                                 Style="{DynamicResource SquareButtonStyle}" Margin="5,10,0,0" Padding="0" Height="25"
+                                 Width="100" HorizontalAlignment="Right" Click="ThirdPagePrevious"/>
                     </DockPanel>
                 </StackPanel>
             </TabItem>
