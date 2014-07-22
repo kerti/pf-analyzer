@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace pf_analyzer.Exceptions
+namespace PFAnalyzer.Exceptions
 {
     [Serializable]
     public abstract class NonSystemException : Exception
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NonSystemException"/> class.
         /// </summary>
@@ -57,6 +56,5 @@ namespace pf_analyzer.Exceptions
             : base(message, innerException)
         {
         }
-
     }
 }

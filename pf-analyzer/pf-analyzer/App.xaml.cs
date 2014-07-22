@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace pf_analyzer
+namespace PFAnalyzer
 {
     /// <summary>
     /// Interaction logic for App.xaml

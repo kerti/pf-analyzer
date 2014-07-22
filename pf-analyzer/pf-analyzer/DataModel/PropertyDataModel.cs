@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace pf_analyzer.DataModel
+namespace PFAnalyzer.DataModel
 {
     /// <summary>
     /// This class represents the all the data associated with a
@@ -8,58 +8,70 @@ namespace pf_analyzer.DataModel
     /// </summary>
     public class PropertyDataModel : BaseModel
     {
-
         /// <summary>
-        /// The location of the property. Could be a name or an address or an
+        /// Gets or sets the location of the property. Could be a name or an address or an
         /// abbreviated address.
         /// </summary>
         public string Location { get; set; }
 
         /// <summary>
-        /// Total land area that is workable.
+        /// Gets or sets the total land area that is workable.
         /// </summary>
         public decimal TotalLandArea { get; set; }
 
         /// <summary>
-        /// Total land area set aside for public roads.
+        /// Gets or sets the total land area set aside for public roads.
         /// </summary>
         public decimal TotalRoadArea { get; set; }
 
         /// <summary>
-        /// Total land area set aside for public facilities such as parks or recreation areas.
+        /// Gets or sets the total land area set aside for public facilities such as parks or recreation areas.
         /// </summary>
         public decimal TotalPublicFacilityArea { get; set; }
 
         /// <summary>
-        /// The price of the property per meter squared as set by the seller.
+        /// Gets or sets the price of the property per meter squared as set by the seller.
         /// </summary>
         public decimal BaseLandPrice { get; set; }
 
         /// <summary>
-        /// The collection of lots associated with this piece of property.
+        /// Gets or sets the collection of lots associated with this piece of property.
         /// </summary>
         public ObservableCollection<Lot> Lots { get; set; }
 
         /// <summary>
-        /// The collection of costs associated with this piece of property.
+        /// Gets or sets the collection of costs associated with this piece of property.
         /// </summary>
         public ObservableCollection<Cost> Costs { get; set; }
 
         public decimal TotalCostsOfDevelopment { get; set; }
-        public decimal EffectiveLandCost { get; set; }
-        public decimal LandResaleProfitPercent { get; set; }
-        public decimal LandResalePrice { get; set; }
-        public decimal BuildingPrice { get; set; }
-        public decimal BuildingPermitCostPerLot { get; set; }
-        public decimal PromoCostPerLot { get; set; }
-        public decimal ValueAddedTaxPercent { get; set; }
-        public decimal FeePercent { get; set; }
-        public decimal[] ProfitPoints { get; set; }
-        public decimal TotalBaseSalePrice { get; set; }
-        public decimal FinalProfitPercentage { get; set; }
-        public decimal FinalProfitNominal { get; set; }
-        public decimal TotalActualLandValue { get; set; }
-        public decimal ActualLandValue { get; set; }
 
+        public decimal EffectiveLandCost { get; set; }
+
+        public decimal LandResaleProfitPercent { get; set; }
+
+        public decimal LandResalePrice { get; set; }
+
+        public decimal BuildingPrice { get; set; }
+
+        public decimal BuildingPermitCostPerLot { get; set; }
+
+        public decimal PromoCostPerLot { get; set; }
+
+        public decimal ValueAddedTaxPercent { get; set; }
+
+        public decimal FeePercent { get; set; }
+
+        public decimal[] ProfitPoints { get; set; }
+
+        public decimal TotalBaseSalePrice { get; set; }
+
+        public decimal FinalProfitPercentage { get; set; }
+
+        public decimal FinalProfitNominal { get; set; }
+
+        public decimal TotalActualLandValue { get; set; }
+
+        public decimal ActualLandValue { get; set; }
     }
 }

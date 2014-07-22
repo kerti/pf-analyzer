@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace pf_analyzer
+namespace PFAnalyzer
 {
     /// <summary>
     /// Interaction logic for About.xaml

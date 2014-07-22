@@ -1,10 +1,9 @@
 ﻿using MahApps.Metro.Controls.Dialogs;
 
-namespace pf_analyzer.Common
+namespace PFAnalyzer.Common
 {
     public static class Constants
     {
-
         #region File Type
 
         public static readonly string FILE_EXTENSION = ".pfz";
@@ -41,6 +40,5 @@ namespace pf_analyzer.Common
         };
 
         #endregion
-
     }
 }

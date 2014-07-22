@@ -4,11 +4,10 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
 
-namespace pf_analyzer.DataModel
+namespace PFAnalyzer.DataModel
 {
     public class BaseModel : INotifyPropertyChanged
     {
-
         #region Properties
 
         /// <summary>
@@ -24,7 +23,9 @@ namespace pf_analyzer.DataModel
         /// Invoke the PropertyChanged event to notify that a property
         /// has changed.
         /// </summary>
-        /// <param name="propertyName"></param>
+        /// <param name="propertyName">
+        /// The name of the property that is changed.
+        /// </param>
         protected void NotifyPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
@@ -34,6 +35,5 @@ namespace pf_analyzer.DataModel
         }
 
         #endregion
-
     }
 }

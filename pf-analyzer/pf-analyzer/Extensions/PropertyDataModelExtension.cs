@@ -5,19 +5,18 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using pf_analyzer.Common;
-using pf_analyzer.DataModel;
-using pf_analyzer.Exceptions;
+using PFAnalyzer.Common;
+using PFAnalyzer.DataModel;
+using PFAnalyzer.Exceptions;
 
-namespace pf_analyzer.Extensions
+namespace PFAnalyzer.Extensions
 {
     /// <summary>
     /// Extension class to contain the logic pertinent to the 
     /// <see cref="DataModel.PropertyDataModel"/> object model.
     /// </summary>
-    static class PropertyDataModelExtension
+    public static sealed class PropertyDataModelExtension
     {
-
         /// <summary>
         /// Initializes the lots collection of a <see cref="DataModel.PropertyDataModel"/> object.
         /// </summary>
@@ -56,6 +55,7 @@ namespace pf_analyzer.Extensions
         {
             model.InitializeLots();
             model.InitializeCosts();
+
             // TODO: Set the following defaults in a config file for configurability
             model.LandResaleProfitPercent = 10;
             model.ValueAddedTaxPercent = 5;
@@ -103,6 +103,7 @@ namespace pf_analyzer.Extensions
                 {
                     totalAlottedLandArea += lot.LandArea;
                 }
+
                 return model.TotalLandArea - model.TotalRoadArea - model.TotalPublicFacilityArea - totalAlottedLandArea;
             }
             else
@@ -315,11 +316,13 @@ namespace pf_analyzer.Extensions
                 {
                     throw new DataValidationException("Salah satu nama kavling masih kosong.");
                 }
+
                 if (0 == lot.LandArea)
                 {
                     throw new DataValidationException("Luas tanah untuk kavling \"" + lot.Name + "\" belum ditentukan."
                         + "\n\nApabila Anda tidak ingin memperhitungkan luasan kavling tersebut, silakan hapus dari daftar kavling.");
                 }
+
                 if (0 == lot.BuildingArea)
                 {
                     // TODO: This shouldn't be a problem since a lot may be sold as land only with no buildings planned.
@@ -358,11 +361,13 @@ namespace pf_analyzer.Extensions
                     throw new DataValidationException("Harga satuan belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
                         + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
                 }
+
                 if (0 == cost.Quantity)
                 {
                     throw new DataValidationException("Volume belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
                         + "\n\nApabila Anda tidak ingin memperhitungkan biaya/pekerjaan tersebut, silakan hapus dari daftar biaya.");
                 }
+
                 if (0 == cost.TotalValue)
                 {
                     throw new DataValidationException("Biaya total belum ditentukan untuk biaya/pekerjaan \"" + cost.Name + "\"."
@@ -396,32 +401,31 @@ namespace pf_analyzer.Extensions
             model.TotalBaseSalePrice = 0;
             foreach (Lot lot in model.Lots)
             {
-
-                /// set common costs
+                // set common costs
                 lot.BuildingPermitCost = model.BuildingPermitCostPerLot;
                 lot.PromoCost = model.PromoCostPerLot;
 
-                //// calculate total building price = building price * building area
+                // calculate total building price = building price * building area
                 lot.TotalBuildingCost = model.BuildingPrice * lot.BuildingArea;
 
-                //// calculate total land price = land resale price * total land area
+                // calculate total land price = land resale price * total land area
                 lot.TotalLandCost = model.LandResalePrice * lot.LandArea;
 
-                //// calculate total nett price = total building price
-                //// + total land price + building permit + promo cost
+                // calculate total nett price = total building price
+                // + total land price + building permit + promo cost
                 lot.TotalNettPrice = lot.TotalBuildingCost + lot.TotalLandCost
                     + model.BuildingPermitCostPerLot + model.PromoCostPerLot;
 
-                /// calculate value added tax = %VAT * total nett price
+                // calculate value added tax = %VAT * total nett price
                 lot.ValueAddedTax = (model.ValueAddedTaxPercent / 100) * lot.TotalNettPrice;
 
-                /// calculate fee = %fee * total nett price
+                // calculate fee = %fee * total nett price
                 lot.Fee = (model.FeePercent / 100) * lot.TotalNettPrice;
 
-                /// calculate base sale price = total nett price + VAT + fee
+                // calculate base sale price = total nett price + VAT + fee
                 lot.BaseSalePrice = lot.TotalNettPrice + lot.ValueAddedTax + lot.Fee;
 
-                //// calculate price points
+                // calculate price points
                 lot.PricePoints = new ObservableCollection<PricePoint>();
                 for (int i = 0; i < model.ProfitPoints.Count(); i++)
                 {
@@ -433,9 +437,8 @@ namespace pf_analyzer.Extensions
                     lot.PricePoints.Add(pricePoint);
                 }
 
-                //// calculate sum of base sale price
+                // calculate sum of base sale price
                 model.TotalBaseSalePrice += lot.BaseSalePrice;
-
             }
 
             // calculate final profit = total base sale price * final profit percentage / 100
@@ -484,12 +487,14 @@ namespace pf_analyzer.Extensions
         /// <param name="xml">
         /// The XML-formatted string to convert.
         /// </param>
+        /// <returns>
+        /// The generated <see cref="DataModel.PropertyDataModel"/> object.
+        /// </returns>
         public static PropertyDataModel FromXML(this PropertyDataModel model, string xml)
         {
             var stringReader = new StringReader(xml);
             var serializer = new XmlSerializer(typeof(PropertyDataModel));
             return serializer.Deserialize(stringReader) as PropertyDataModel;
         }
-
     }
 }

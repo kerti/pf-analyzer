@@ -14,19 +14,18 @@ using System.Windows.Media;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Microsoft.Win32;
-using pf_analyzer.Common;
-using pf_analyzer.DataModel;
-using pf_analyzer.Exceptions;
-using pf_analyzer.Extensions;
+using PFAnalyzer.Common;
+using PFAnalyzer.DataModel;
+using PFAnalyzer.Exceptions;
+using PFAnalyzer.Extensions;
 
-namespace pf_analyzer
+namespace PFAnalyzer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-
         #region Private Properties
 
         private PropertyDataModel data;
@@ -82,8 +81,8 @@ namespace pf_analyzer
 
         private void TextboxPreviewTextInputNumericOnly(object sender, TextCompositionEventArgs e)
         {
-            e.Handled = !Char.IsNumber(Convert.ToChar(e.Text));
-            base.OnPreviewTextInput(e);
+            e.Handled = !char.IsNumber(Convert.ToChar(e.Text));
+            OnPreviewTextInput(e);
         }
 
         private void DeferScrollToParent(object sender, MouseWheelEventArgs e)
@@ -122,17 +121,24 @@ namespace pf_analyzer
             {
                 DependencyObject child = VisualTreeHelper.GetChild((prop), i) as DependencyObject;
                 if (child == null)
+                {
                     continue;
+                }
 
                 T castedProp = child as T;
                 if (castedProp != null)
+                {
                     return castedProp;
+                }
 
                 castedProp = GetFirstChildByType<T>(child);
 
                 if (castedProp != null)
+                {
                     return castedProp;
+                }
             }
+
             return null;
         }
 
@@ -160,6 +166,7 @@ namespace pf_analyzer
             {
                 canOpenFile = false;
             }
+
             e.Handled = true;
         }
 
@@ -173,6 +180,7 @@ namespace pf_analyzer
             {
                 e.Effects = DragDropEffects.None;
             }
+
             e.Handled = true;
         }
 
@@ -319,13 +327,15 @@ namespace pf_analyzer
             System.Collections.IList selectedLots = dgBasicLots.SelectedItems;
             if (null != selectedLots && selectedLots.Count > 0)
             {
+                string message = "Apakah Anda yakin ingin menghapus kavling-kavling yang telah Anda tandai?"
+                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
+                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.";
                 MessageDialogResult answer = await this.ShowMessageAsync(
                     "Konfirmasi Menghapus Kavling",
-                    "Apakah Anda yakin ingin menghapus kavling-kavling yang telah Anda tandai?"
-                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
-                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.",
+                    message,
                     MessageDialogStyle.AffirmativeAndNegative,
                     Constants.MDS_YESNO);
+
                 if (MessageDialogResult.Affirmative == answer)
                 {
                     List<Lot> lots = new List<Lot>();
@@ -337,6 +347,7 @@ namespace pf_analyzer
                             lots.Add(lot);
                         }
                     }
+
                     foreach (Lot lot in lots)
                     {
                         data.Lots.Remove(lot);
@@ -389,12 +400,14 @@ namespace pf_analyzer
             System.Collections.IList selectedCosts = dgCosts.SelectedItems;
             if (null != selectedCosts && selectedCosts.Count > 0)
             {
+                string message = "Apakah Anda yakin ingin menghapus pekerjaan-pekerjaan yang telah Anda tandai?"
+                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
+                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.";
+
                 // TODO: Validate to make sure the user doesn't delete mandatory costs
                 MessageDialogResult answer = await this.ShowMessageAsync(
                     "Konfirmasi Menghapus Pekerjaan",
-                    "Apakah Anda yakin ingin menghapus pekerjaan-pekerjaan yang telah Anda tandai?"
-                        + "\n\n Silakan tekan \"tidak\" untuk memeriksa kembali."
-                        + "\n Silakan tekan \"ya\" untuk melanjutkan penghapusan.",
+                    message,
                     MessageDialogStyle.AffirmativeAndNegative,
                     Constants.MDS_YESNO);
                 if (MessageDialogResult.Affirmative == answer)
@@ -408,6 +421,7 @@ namespace pf_analyzer
                             costs.Add(cost);
                         }
                     }
+
                     foreach (Cost cost in costs)
                     {
                         data.Costs.Remove(cost);
@@ -497,10 +511,10 @@ namespace pf_analyzer
 
             if (data.TotalLandArea <= (data.TotalRoadArea + data.TotalPublicFacilityArea))
             {
+                string message = "Silakan periksa kembali luas jalan dan fasum, "
+                        + "seharusnya jumlah keduanya masih menyisakan lahan untuk kavling.";
                 await this.ShowMessageAsync(
-                    "Mohon Periksa Kembali Data", "Silakan periksa kembali luas jalan dan fasum, "
-                        + "seharusnya jumlah keduanya masih menyisakan lahan untuk kavling.",
-                    MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
+                    "Mohon Periksa Kembali Data", message, MessageDialogStyle.Affirmative, Constants.MDS_OKAY);
                 txtRoadArea.Focus();
                 return false;
             }
@@ -654,6 +668,7 @@ namespace pf_analyzer
             {
                 settings = Constants.MDS_OKAY;
             }
+
             await this.ShowMessageAsync(title, message, style, settings);
         }
 
@@ -694,9 +709,7 @@ namespace pf_analyzer
 
         private void CopyLoadedData(PropertyDataModel converted)
         {
-
-            #region Page One
-
+            // Page One
             data.Location = converted.Location;
             data.TotalLandArea = converted.TotalLandArea;
             data.TotalRoadArea = converted.TotalRoadArea;
@@ -711,10 +724,7 @@ namespace pf_analyzer
                 }
             }
 
-            #endregion
-
-            #region Page Two
-
+            // Page Two
             if (null != converted.Costs && converted.Costs.Count > 0)
             {
                 foreach (Cost cost in converted.Costs)
@@ -739,18 +749,13 @@ namespace pf_analyzer
             data.FinalProfitNominal = converted.FinalProfitNominal;
             data.TotalActualLandValue = converted.TotalActualLandValue;
             data.ActualLandValue = converted.ActualLandValue;
-
-            #endregion
-
         }
 
         private void LoadXmlDataToScreen()
         {
             if (null != data)
             {
-
-                #region Page One
-
+                // Page One
                 if (!string.IsNullOrEmpty(data.Location))
                 {
                     txtLocation.Text = data.Location;
@@ -761,10 +766,7 @@ namespace pf_analyzer
                 txtPublicFacilityArea.Text = data.TotalPublicFacilityArea.ToString("#,##0.00");
                 txtBaseLandPrice.Text = data.BaseLandPrice.ToString("#,##0.00");
 
-                #endregion Page One
-
-                #region Page Two
-
+                // Page Two
                 txtTotalCosts.Text = data.TotalCostsOfDevelopment.ToString("#,##0.00");
                 txtEffectiveLandCost.Text = data.EffectiveLandCost.ToString("#,##0.00");
                 txtLandResaleProfitPercent.Text = data.LandResaleProfitPercent.ToString("#,##0.00");
@@ -774,11 +776,7 @@ namespace pf_analyzer
                 txtPromoCostPerLot.Text = data.PromoCostPerLot.ToString("#,##0.00");
                 txtValueAddedTaxPercent.Text = data.ValueAddedTaxPercent.ToString("#,##0.00");
                 txtFeePercent.Text = data.FeePercent.ToString("#,##0.00");
-
-                #endregion Page Two
-
             }
         }
-
     }
 }
