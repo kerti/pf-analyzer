@@ -3,7 +3,7 @@
 namespace PFAnalyzer
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Interaction logic for the application.
     /// </summary>
     public partial class App : Application
     {

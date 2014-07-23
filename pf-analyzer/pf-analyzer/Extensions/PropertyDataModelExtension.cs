@@ -15,7 +15,7 @@ namespace PFAnalyzer.Extensions
     /// Extension class to contain the logic pertinent to the 
     /// <see cref="DataModel.PropertyDataModel"/> object model.
     /// </summary>
-    public static sealed class PropertyDataModelExtension
+    public static class PropertyDataModelExtension
     {
         /// <summary>
         /// Initializes the lots collection of a <see cref="DataModel.PropertyDataModel"/> object.
@@ -65,7 +65,7 @@ namespace PFAnalyzer.Extensions
         }
 
         /// <summary>
-        /// Asssign an event handler to the costs collection of a <see cref="DataModel.PropertyDataModel"/> object.
+        /// Assign an event handler to the costs collection of a <see cref="DataModel.PropertyDataModel"/> object.
         /// </summary>
         /// <param name="model">
         /// The <see cref="DataModel.PropertyDataModel"/> object to receive the assignment.

@@ -22,18 +22,32 @@ using PFAnalyzer.Extensions;
 namespace PFAnalyzer
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Main Window.
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
         #region Private Properties
 
+        /// <summary>
+        /// The <see cref="DataModel.PropertyDataModel"/> object that is to be used throughout the screen.
+        /// </summary>
         private PropertyDataModel data;
+
+        /// <summary>
+        /// The filename of the currently open file in the application. Should be empty when the file is closed.
+        /// </summary>
         private string filename = string.Empty;
+
+        /// <summary>
+        /// A boolean indicating whether or not the application is in a state that allows for opening a new file.
+        /// </summary>
         private bool canOpenFile = true;
 
         #endregion
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -52,6 +66,7 @@ namespace PFAnalyzer
             // Set the cell style for the grid
             this.dgBasicLots.CellStyle = cellStyle;
 
+            // Initialise the data model
             data = new PropertyDataModel();
             data.Initialize();
             this.DataContext = data;
@@ -62,16 +77,52 @@ namespace PFAnalyzer
 
         #region Common Control Events
 
+        /// <summary>
+        /// Event handler for Textbox Got Keyboard Focus event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler will select all text on the Textbox.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void TextboxGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             (e.OriginalSource as TextBox).SelectAll();
         }
 
+        /// <summary>
+        /// Event handler for Textbox Got Mouse Capture event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler will select all text on the Textbox.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void TextboxGotMouseCapture(object sender, MouseEventArgs e)
         {
             (e.OriginalSource as TextBox).SelectAll();
         }
 
+        /// <summary>
+        /// Event handler for Button Click event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler will display the About page.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void ShowAboutPage(object sender, RoutedEventArgs e)
         {
             About about = new About();
@@ -79,12 +130,37 @@ namespace PFAnalyzer
             about.ShowDialog();
         }
 
+        /// <summary>
+        /// Event handler for Textbox Preview Text Input event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler will prevent non-numeric character inputs.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void TextboxPreviewTextInputNumericOnly(object sender, TextCompositionEventArgs e)
         {
             e.Handled = !char.IsNumber(Convert.ToChar(e.Text));
             OnPreviewTextInput(e);
         }
 
+        /// <summary>
+        /// Event handler for Data Grid Preview Mouse Wheel event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler will defer mouse wheel scroll events to parent control elements on
+        /// Data Grids that use it.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void DeferScrollToParent(object sender, MouseWheelEventArgs e)
         {
             if (!e.Handled)
@@ -98,6 +174,18 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Event handler for Data Grid Mouse Preview event.
+        /// </summary>
+        /// <remarks>
+        /// This event handler enables the Data Grid to perform single-click edits.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void DataGridMousePreviewSingleClickEdit(object sender, RoutedEventArgs e)
         {
             // Lookup for the source to be DataGridCell
@@ -115,12 +203,24 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Fetches the first child of a control element.
+        /// </summary>
+        /// <typeparam name="T">
+        /// The type of the control to be fetched.
+        /// </typeparam>
+        /// <param name="prop">
+        /// The control containing the element to be fetched.
+        /// </param>
+        /// <returns>
+        /// The fetched control.
+        /// </returns>
         private T GetFirstChildByType<T>(DependencyObject prop) where T : DependencyObject
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(prop); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild((prop), i) as DependencyObject;
-                if (child == null)
+                DependencyObject child = VisualTreeHelper.GetChild(prop, i) as DependencyObject;
+                if (null == child)
                 {
                     continue;
                 }
@@ -146,6 +246,15 @@ namespace PFAnalyzer
 
         #region Window Drag and Drop Events
 
+        /// <summary>
+        /// Event handler for drag-and-drop operations, specifically when the mouse enters the screen.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void Window_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("Filename"))
@@ -170,6 +279,15 @@ namespace PFAnalyzer
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Event handler for drag-and-drop operations, specifically when the mouse moves about on the screen.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void Window_DragOver(object sender, DragEventArgs e)
         {
             if (canOpenFile)
@@ -184,6 +302,15 @@ namespace PFAnalyzer
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Event handler for drag-and-drop operations, specifically when the mouse leaves the screen.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void Window_DragLeave(object sender, DragEventArgs e)
         {
             canOpenFile = true;
@@ -191,6 +318,15 @@ namespace PFAnalyzer
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Event handler for drag-and-drop operations, specifically when a drop is performed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void Window_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent("Filename"))
@@ -208,12 +344,35 @@ namespace PFAnalyzer
 
         #region Open File Command
 
+        /// <summary>
+        /// Event handler to determine whether an "Open" command is available.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void CanOpenFile(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = canOpenFile;
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Event handler for executing the "Open" command.
+        /// </summary>
+        /// <remarks>
+        /// The command will prompt the user for a file to open, and then loads the contents of the file
+        /// to both the underlying <see cref="DataModel.PropertyDataModel"/> and corresponding fields on
+        /// the UI.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void OpenFile(object sender, ExecutedRoutedEventArgs e)
         {
             OpenFileDialog ofdOpenFile = new OpenFileDialog();
@@ -234,12 +393,35 @@ namespace PFAnalyzer
 
         #region Save File Command
 
+        /// <summary>
+        /// Event handler to determine whether a "Save" command is available.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void CanSaveFile(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
             e.Handled = true;
         }
 
+        /// <summary>
+        /// Event handler for executing the "Save" command.
+        /// </summary>
+        /// <remarks>
+        /// The command checks whether a filename is stored, and then prompts the user for the name of the
+        /// file if one does not exist. After that, it converts the underlying <see cref="DataModel.PropertyDataModel"/>
+        /// object into an XML string and writes it to the selected file.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
         private void SaveFile(object sender, ExecutedRoutedEventArgs e)
         {
             bool isSaveAs = true;
@@ -303,25 +485,102 @@ namespace PFAnalyzer
 
         #endregion Save File Command
 
+        #region New File Command
+
+        /// <summary>
+        /// Event handler to determine whether a "New" command is available.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
+        private void CanCreateNewFile(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+            e.Handled = true;
+        }
+
+        /// <summary>
+        /// Event handler for executing the "New" command.
+        /// </summary>
+        /// <remarks>
+        /// The command reinitializes the underlying <see cref="DataModel.PropertyDataModel"/>,
+        /// resets the UI fields in the process, and empties the stored filename string.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameter of the event.
+        /// </param>
+        private void CreateNewFile(object sender, ExecutedRoutedEventArgs e)
+        {
+            // Initialise the data model
+            data = new PropertyDataModel();
+            data.Initialize();
+            this.DataContext = data;
+            data.RecalculateRemainingLandArea();
+            filename = string.Empty;
+        }
+
+        #endregion New File Command
+
         #endregion Commands
 
         #region Page One
 
+        /// <summary>
+        /// Event handler for setting the remaining land area label.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void HandleSetRemainingLandAreaLabel(object sender, DataGridCellEditEndingEventArgs e)
         {
             SetRemainingLandAreaLabel();
         }
 
+        /// <summary>
+        /// Event handler for setting the remaining land area label.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void HandleSetRemainingLandAreaLabel(object sender, RoutedEventArgs e)
         {
             SetRemainingLandAreaLabel();
         }
 
+        /// <summary>
+        /// Set the remaining land area label based on changes made to the lots collection.
+        /// </summary>
         private void SetRemainingLandAreaLabel()
         {
             lblRemainingAreaNominal.Content = data.RecalculateRemainingLandArea().ToString();
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to delete a lot.
+        /// </summary>
+        /// <remarks>
+        /// Before initiating the delete, the event handler checks whether or not a lot is actually selected
+        /// and displays the appropriate message if a lot is not selected. If a lot is selected, the event will
+        /// display a confirmation message before proceeding to delete.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private async void DeleteLot(object sender, RoutedEventArgs e)
         {
             System.Collections.IList selectedLots = dgBasicLots.SelectedItems;
@@ -364,6 +623,19 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to advance to second page.
+        /// </summary>
+        /// <remarks>
+        /// When advancing to the second page, first page data is validated. If the data is valid, data on the
+        /// second page is updated. If the data is not valid, page change is prevented.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private async void FirstPageNext(object sender, RoutedEventArgs e)
         {
             if (await ValidateFirstPage())
@@ -378,6 +650,19 @@ namespace PFAnalyzer
 
         #region Page Two
 
+        /// <summary>
+        /// Event handler for when the user wants to add preset default costs to the analysis.
+        /// </summary>
+        /// <remarks>
+        /// Before performing the actual add, the user will be asked if existing costs should be deleted
+        /// before adding default costs.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private async void AddDefaultCosts(object sender, RoutedEventArgs e)
         {
             bool clearBeforeAdd = false;
@@ -395,6 +680,18 @@ namespace PFAnalyzer
             data.AddDefaultCosts(clearBeforeAdd, Costs_CollectionChanged, Cost_PropertyChanged);
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to delete a costs.
+        /// </summary>
+        /// <remarks>
+        /// Before performing the actual delete, a confirmation message will be displayed.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private async void DeleteCost(object sender, RoutedEventArgs e)
         {
             System.Collections.IList selectedCosts = dgCosts.SelectedItems;
@@ -438,6 +735,18 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to delete all costs.
+        /// </summary>
+        /// <remarks>
+        /// Before performing the actual delete, a confirmation message will be displayed.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private async void DeleteAllCosts(object sender, RoutedEventArgs e)
         {
             MessageDialogResult answer = await this.ShowMessageAsync(
@@ -451,11 +760,33 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to go back to the second page.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void SecondPagePrevious(object sender, RoutedEventArgs e)
         {
             matcPrimaryTabControl.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to advance to the third page.
+        /// </summary>
+        /// <remarks>
+        /// When advancing to third page, the data is revalidated and recalculated, and all fields
+        /// on the third page are reset to display the correct calculation results.
+        /// </remarks>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void SecondPageNext(object sender, RoutedEventArgs e)
         {
             try
@@ -473,6 +804,15 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Event handler for when the user wants to go back to the second page.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void ThirdPagePrevious(object sender, RoutedEventArgs e)
         {
             matcPrimaryTabControl.SelectedIndex = 1;
@@ -482,6 +822,12 @@ namespace PFAnalyzer
 
         #endregion
 
+        /// <summary>
+        /// Validates the first page and displays a validation message when the data does not pass validation.
+        /// </summary>
+        /// <returns>
+        /// Boolean value indicating whether the first page data passes validation or not.
+        /// </returns>
         private async Task<bool> ValidateFirstPage()
         {
             bool result = true;
@@ -528,7 +874,7 @@ namespace PFAnalyzer
                 return false;
             }
 
-            if (data.Lots.Count == 0)
+            if (0 == data.Lots.Count)
             {
                 await this.ShowMessageAsync(
                     "Data Kavling Masih Kosong", "Silakan tambahkan minimal satu kavling.",
@@ -557,16 +903,39 @@ namespace PFAnalyzer
             return result;
         }
 
+        /// <summary>
+        /// Event handler for a property change event on a <see cref="DataModel.Cost"/> object.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void Cost_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateSecondPageOnDataChange();
         }
 
+        /// <summary>
+        /// Event handler for a property change event on an <see cref="System.Collections.ObjectModel"/>
+        /// containing <see cref="DataModel.Cost"/> objects.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event.
+        /// </param>
+        /// <param name="e">
+        /// The parameters of the event.
+        /// </param>
         private void Costs_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateSecondPageOnDataChange();
         }
 
+        /// <summary>
+        /// Perform updates to the underlying <see cref="DataModel.PropertyDataModel"/> object
+        /// when any data on the second page changes.
+        /// </summary>
         private void UpdateSecondPageOnDataChange()
         {
             data.Calculate();
@@ -575,6 +944,9 @@ namespace PFAnalyzer
             txtLandResalePrice.Text = data.LandResalePrice.ToString("#,###.00");
         }
 
+        /// <summary>
+        /// Perform updates on the mandatory costs whenever necessary.
+        /// </summary>
         private void UpdateMandatoryCosts()
         {
             if (null != data.Costs && data.Costs.Count > 0)
@@ -602,6 +974,10 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Assign values to controls on the third and final page on page change to display correct
+        /// results of all calculations.
+        /// </summary>
         private void SetupResultFields()
         {
             int lotBasedDataGridHeight = 28 * (data.Lots.Count() + 1);
@@ -660,6 +1036,24 @@ namespace PFAnalyzer
             dgResultLotSalePrice.Items.Refresh();
         }
 
+        /// <summary>
+        /// Wrapper method to display a metro style notification. The method has to be async, so using
+        /// this method when the answer does not matter can prevent the calling method to have to be
+        /// async.
+        /// </summary>
+        /// <param name="title">
+        /// The title of the notification.
+        /// </param>
+        /// <param name="message">
+        /// The content of the notification.
+        /// </param>
+        /// <param name="style">
+        /// The style of the notification, which basically determines what buttons to show.
+        /// </param>
+        /// <param name="settings">
+        /// The settings to be used in display in the notification, which basically determines the wording
+        /// on the buttons.
+        /// </param>
         private async void ShowMessageNoWait(string title, string message,
             MessageDialogStyle style = MessageDialogStyle.Affirmative,
             MetroDialogSettings settings = null)
@@ -672,6 +1066,14 @@ namespace PFAnalyzer
             await this.ShowMessageAsync(title, message, style, settings);
         }
 
+        /// <summary>
+        /// Attempt to read an XML from a string that is read from a file. Upon successful reading, the
+        /// data is copied to the underlying <see cref="DataModel.PropertyDataModel"/> object and then
+        /// loaded to the UI.
+        /// </summary>
+        /// <param name="attemptedFilename">
+        /// The name of the file to read.
+        /// </param>
         private void ReadXmlDocument(string attemptedFilename)
         {
             try
@@ -707,6 +1109,16 @@ namespace PFAnalyzer
             }
         }
 
+        /// <summary>
+        /// Copies data from a <see cref="DataModel.PropertyDataModel"/> resulting from a file read to the
+        /// underlying <see cref="DataModel.PropertyDataModel"/> used throughout the screen.
+        /// </summary>
+        /// <remarks>
+        /// This is necessary to preserve all data bindings.
+        /// </remarks>
+        /// <param name="converted">
+        /// The <see cref="DataModel.PropertyDataModel"/> that is generated from a file read operation.
+        /// </param>
         private void CopyLoadedData(PropertyDataModel converted)
         {
             // Page One
@@ -751,6 +1163,13 @@ namespace PFAnalyzer
             data.ActualLandValue = converted.ActualLandValue;
         }
 
+        /// <summary>
+        /// Transfer the data from the underlying <see cref="DataModel.PropertyDataModel"/> object to appropriate
+        /// controls on screen.
+        /// </summary>
+        /// <remarks>
+        /// This is necessary because at the moment the controls on screen are not set to support two-way data binding.
+        /// </remarks>
         private void LoadXmlDataToScreen()
         {
             if (null != data)

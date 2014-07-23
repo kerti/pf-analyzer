@@ -44,24 +44,24 @@ namespace PFAnalyzer.DataModel
         public decimal PromoCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the total nett price of this lot, which is calculated as
-        /// total building cost + total land cost + building permit cost + promo cost
+        /// Gets or sets the total net price of this lot, which is calculated as
+        /// total building cost + total land cost + building permit cost + promo cost.
         /// </summary>
         public decimal TotalNettPrice { get; set; }
 
         /// <summary>
-        /// Gets or sets the Value Added Tax applied for this lot, calculated against total nett price.
+        /// Gets or sets the Value Added Tax applied for this lot, calculated against total net price.
         /// </summary>
         public decimal ValueAddedTax { get; set; }
 
         /// <summary>
-        /// Gets or sets the fee applied for this lot, calculated against total nett price.
+        /// Gets or sets the fee applied for this lot, calculated against total net price.
         /// </summary>
         public decimal Fee { get; set; }
 
         /// <summary>
         /// Gets or sets the base sale price for this lot, calculated as
-        /// total nett price + VAT + fee
+        /// total net price + VAT + fee.
         /// </summary>
         public decimal BaseSalePrice { get; set; }
 

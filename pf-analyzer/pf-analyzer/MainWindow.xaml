@@ -22,7 +22,8 @@
         Icon="Resources\pfa.ico">
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="btnLoad" Content="buka" Command="Open" />
+            <Button x:Name="btnNew" Content="buat baru" Command="New" />
+            <Button x:Name="btnOpen" Content="buka" Command="Open" />
             <Button x:Name="btnSave" Content="simpan" Command="Save" />
             <Button x:Name="btnAbout" Content="tentang program ini" Click="ShowAboutPage" />
         </Controls:WindowCommands>
@@ -42,10 +43,12 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.CommandBindings>
+        <CommandBinding Command="New" CanExecute="CanCreateNewFile" Executed="CreateNewFile" />
         <CommandBinding Command="Open" CanExecute="CanOpenFile" Executed="OpenFile" />
         <CommandBinding Command="Save" CanExecute="CanSaveFile" Executed="SaveFile" />
     </Window.CommandBindings>
     <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="N" Command="New" />
         <KeyBinding Modifiers="Ctrl" Key="O" Command="Open"/>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="Save" />
     </Window.InputBindings>

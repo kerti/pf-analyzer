@@ -91,7 +91,8 @@
         /// <summary>
         /// Gets or sets the value of one unit of this cost.
         /// </summary>
-        public decimal UnitValue {
+        public decimal UnitValue
+        {
             get
             {
                 return unitValue;
@@ -120,7 +121,8 @@
             {
                 totalValue = value;
                 NotifyPropertyChanged("TotalValue");
-                if (quantity > 0)
+
+                if (quantity > decimal.Zero)
                 {
                     unitValue = value / quantity;
                 }

@@ -2,6 +2,10 @@
 
 namespace PFAnalyzer.DataModel
 {
+    /// <summary>
+    /// The base of all data models in the project, implementing
+    /// <see cref="System.ComponentModel.INotifyPropertyChanged"/>.
+    /// </summary>
     public class BaseModel : INotifyPropertyChanged
     {
         #region Properties

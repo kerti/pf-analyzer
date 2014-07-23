@@ -3,16 +3,13 @@ using System.Runtime.Serialization;
 
 namespace PFAnalyzer.Exceptions
 {
+    /// <summary>
+    /// An exception class that specifically pertains to data validation logic and any errors that may arise and need
+    /// to be addressed from such logic.
+    /// </summary>
     [Serializable]
     public class DataValidationException : NonSystemException
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataValidationException"/> class.
-        /// </summary>
-        public DataValidationException()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="DataValidationException"/> class with a specified error
         /// message.

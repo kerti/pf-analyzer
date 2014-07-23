@@ -3,16 +3,13 @@ using System.Runtime.Serialization;
 
 namespace PFAnalyzer.Exceptions
 {
+    /// <summary>
+    /// This class is an abstract class that is meant to be the base of all exceptions that are manually thrown by
+    /// user code, which then need to be addressed separately from system exceptions.
+    /// </summary>
     [Serializable]
     public abstract class NonSystemException : Exception
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NonSystemException"/> class.
-        /// </summary>
-        public NonSystemException()
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NonSystemException"/> class with a specified error
         /// message.
