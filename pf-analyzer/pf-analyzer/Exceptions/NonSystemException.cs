@@ -17,7 +17,7 @@ namespace PFAnalyzer.Exceptions
         /// <param name="message">
         /// The message that describes the error. 
         /// </param>
-        public NonSystemException(string message)
+        protected NonSystemException(string message)
             : base(message)
         {
         }
@@ -33,7 +33,7 @@ namespace PFAnalyzer.Exceptions
         /// The <see cref="System.Runtime.Serialization.StreamingContext"/> that contains contextual
         /// information about the source or destination. 
         /// </param>
-        public NonSystemException(SerializationInfo info, StreamingContext context)
+        protected NonSystemException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
         }
@@ -49,7 +49,7 @@ namespace PFAnalyzer.Exceptions
         /// The exception that is the cause of the current exception, or a null reference if no inner
         /// exception is specified. 
         /// </param>
-        public NonSystemException(string message, Exception innerException)
+        protected NonSystemException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
