@@ -27,7 +27,7 @@
       <![CDATA[Installed OR NETFRAMEWORK45]]>
     </Condition>
 
-    <UIRef Id="WixUI_InstallDir" />
+    <!--<UIRef Id="WixUI_InstallDir" />-->
 
   </Product>
 
