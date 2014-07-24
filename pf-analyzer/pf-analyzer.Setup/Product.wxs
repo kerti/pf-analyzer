@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-  <Product Id="DBDF991F-51F1-4D54-A1D9-B33262B82FCC" Name="PF Analyzer 2013" Language="1033"
-           Version="0.1.0.1328" Manufacturer="RadWorks" UpgradeCode="a8c6051a-8c7f-4e2a-9995-b755377aff79">
-    
+  <Product Id="*" Name="PF Analyzer 2013" Language="1033"
+           Version="0.2.1.1924" Manufacturer="RadWorks" UpgradeCode="a8c6051a-8c7f-4e2a-9995-b755377aff79">
+
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
-    
-    <MajorUpgrade DowngradeErrorMessage="A newer version of PF Analyzer is already installed." />
+
+    <MajorUpgrade Schedule="afterInstallInitialize"
+                  DowngradeErrorMessage="A newer version of PF Analyzer 2013 is already installed." />
 
     <Media Id="1" Cabinet="media1.cab" EmbedCab="yes"/>
 
-    <Feature Id='Complete' Level='1'>
+    <Feature Id='Complete' Level='1' Title='PF Analyzer 2013'>
       <ComponentRef Id='MainExecutable' />
       <ComponentRef Id='MahAppsLibrary' />
       <ComponentRef Id='WindowsInteractivityLibrary' />
@@ -25,8 +26,9 @@
     <Condition Message="This application requires .NET Framework 4.5. Please install the .NET Framework then run this installer again.">
       <![CDATA[Installed OR NETFRAMEWORK45]]>
     </Condition>
-    
-    <!--<UIRef Id="WixUI_InstallDir" />-->
+
+    <UIRef Id="WixUI_InstallDir" />
+
   </Product>
 
   <Fragment>
